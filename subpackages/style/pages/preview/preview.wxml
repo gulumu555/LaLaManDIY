@@ -1,0 +1,91 @@
+<!-- preview.wxml - 处理结果预览页面 -->
+<view class="container">
+  <!-- 返回按钮 -->
+  <view class="back-button" bindtap="goBack">
+    <image src="/images/icons/back.png" mode="aspectFit" class="back-icon"></image>
+  </view>
+  
+  <!-- 顶部：最终图片预览 -->
+  <view class="result-preview">
+    <image src="{{resultImagePath}}" mode="aspectFit" class="result-image"></image>
+  </view>
+  
+  <!-- 中间：精度选择区域 -->
+  <view class="resolution-options">
+    <view class="section-title">选择精度</view>
+    
+    <view class="resolution-grid">
+      <!-- 免费选项 -->
+      <view class="resolution-item {{selectedResolution === 'small' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="small">
+        <view class="resolution-label">免费</view>
+        <view class="resolution-size">{{smallResolution}}</view>
+      </view>
+      
+      <!-- 付费选项 -->
+      <view class="resolution-item {{selectedResolution === 'phone' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="phone">
+        <view class="resolution-label">原版</view>
+        <view class="resolution-size">3000 x 6500</view>
+        <view class="resolution-premium">
+          <icon type="lock" size="12"></icon>
+        </view>
+      </view>
+      
+      <view class="resolution-item {{selectedResolution === 'phone2' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="phone2">
+        <view class="resolution-label">手机</view>
+        <view class="resolution-size">2358 x 5112</view>
+        <view class="resolution-premium">
+          <icon type="lock" size="12"></icon>
+        </view>
+      </view>
+      
+      <view class="resolution-item {{selectedResolution === 'tablet' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="tablet">
+        <view class="resolution-label">平板</view>
+        <view class="resolution-size">4096 x 3072</view>
+        <view class="resolution-premium">
+          <icon type="lock" size="12"></icon>
+        </view>
+      </view>
+      
+      <view class="resolution-item {{selectedResolution === 'pc' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="pc">
+        <view class="resolution-label">电脑</view>
+        <view class="resolution-size">5120 x 2880</view>
+        <view class="resolution-premium">
+          <icon type="lock" size="12"></icon>
+        </view>
+      </view>
+      
+      <view class="resolution-item {{selectedResolution === 'mac' ? 'selected' : ''}}" 
+            bindtap="selectResolution" data-resolution="mac">
+        <view class="resolution-label">Mac</view>
+        <view class="resolution-size">3840 x 2496</view>
+        <view class="resolution-premium">
+          <icon type="lock" size="12"></icon>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部：保存、分享和重新开始按钮 -->
+  <view class="action-buttons">
+    <button class="main-button" bindtap="saveImage">保存到相册</button>
+    
+    <view class="secondary-buttons">
+      <button class="secondary-button" bindtap="shareToWechat">分享到微信</button>
+      <button class="secondary-button" bindtap="shareToMoments">分享到朋友圈</button>
+      <button class="secondary-button" bindtap="restartProcess">重新开始</button>
+    </view>
+  </view>
+  
+  <!-- 加载提示 -->
+  <view class="loading-mask" wx:if="{{isLoading}}">
+    <view class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">{{loadingText}}</text>
+    </view>
+  </view>
+</view>

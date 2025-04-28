@@ -1,0 +1,175 @@
+/* user.wxss - 用户个人中心页面样式 */
+.container {
+  padding: 0;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.user-card {
+  background-color: #6C5CE7;
+  padding: 40rpx 30rpx;
+  color: white;
+  position: relative;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.user-details {
+  margin-left: 30rpx;
+}
+
+.user-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.user-id {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.login-btn {
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: #6C5CE7;
+  font-size: 28rpx;
+  padding: 12rpx 30rpx;
+  border-radius: 30rpx;
+  border: none;
+  line-height: 1.5;
+}
+
+.menu-section {
+  padding: 20rpx;
+}
+
+.menu-group {
+  background-color: white;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  position: relative;
+}
+
+.menu-item:not(:last-child) {
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.menu-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.history-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZDNUNFNyI+PHBhdGggZD0iTTEyIDJDNi41IDIgMiA2LjUgMiAxMnM0LjUgMTAgMTAgMTAgMTAtNC41IDEwLTEwUzE3LjUgMiAxMiAyem0wIDE4Yy00LjQgMC04LTMuNi04LThzMy42LTggOC04IDggMy42IDggOC0zLjYgOC04IDh6bS41LTEzSDExdjZsNS4yIDMuMi43LTEuMi00LjItMi41VjdoLS4yeiIvPjwvc3ZnPg==');
+}
+
+.order-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZDNUNFNyI+PHBhdGggZD0iTTE5IDNINWMtMS4xIDAtMiAuOS0yIDJ2MTRjMCAxLjEuOSAyIDIgMmgxNGMxLjEgMCAyLS45IDItMlY1YzAtMS4xLS45LTItMi0yem0wIDE2SDVWNWgxNHYxNHptLTUuMDQtNi45NGwyLjgtMi44LTEuNDEtMS40MS0yLjggMi44LTIuOC0yLjgtMS40MSAxLjQxIDIuOCAyLjgtMi44IDIuOCAxLjQxIDEuNDEgMi44LTIuOCAyLjggMi44IDEuNDEtMS40MS0yLjgtMi44eiIvPjwvc3ZnPg==');
+}
+
+.address-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZDNUNFNyI+PHBhdGggZD0iTTEyIDJDOC4xMyAyIDUgNS4xMyA1IDljMCA1LjI1IDcgMTMgNyAxM3M3LTcuNzUgNy0xM2MwLTMuODctMy4xMy03LTctN3ptMCA5LjVjLTEuMzggMC0yLjUtMS4xMi0yLjUtMi41czEuMTItMi41IDIuNS0yLjUgMi41IDEuMTIgMi41IDIuNS0xLjEyIDIuNS0yLjUgMi41eiIvPjwvc3ZnPg==');
+}
+
+.feedback-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZDNUNFNyI+PHBhdGggZD0iTTIwIDJINGMtMS4xIDAtMS45OS45LTEuOTkgMkwyIDIybDQtNGgxNGMxLjEgMCAyLS45IDItMlY0YzAtMS4xLS45LTItMi0yem0tNyAxMmgtMnYtMmgydjJ6bTAtNGgtMlY2aDJ2NHoiLz48L3N2Zz4=');
+}
+
+.about-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZDNUNFNyI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4em0xLTExaC0ydjZoMnYtNnptMC04aC0ydjJoMlYxeiIvPjwvc3ZnPg==');
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.menu-arrow {
+  font-size: 30rpx;
+  color: #ccc;
+}
+
+.menu-badge {
+  background-color: #FF5722;
+  color: white;
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 20rpx;
+  margin-right: 10rpx;
+}
+
+.promo-section {
+  padding: 0 20rpx 30rpx;
+}
+
+.promo-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  color: #333;
+}
+
+.promo-card {
+  background-color: white;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.promo-image {
+  width: 100%;
+  height: 200rpx;
+}
+
+.promo-info {
+  padding: 20rpx;
+}
+
+.promo-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.promo-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.footer {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.footer-text {
+  font-size: 24rpx;
+  color: #999;
+}

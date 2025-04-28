@@ -1,0 +1,69 @@
+<!-- user.wxml - 用户个人中心页面 -->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <image class="user-avatar" src="{{userInfo.avatarUrl || '../../images/default_avatar.png'}}"></image>
+      <view class="user-details">
+        <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
+        <text class="user-id" wx:if="{{isLoggedIn}}">ID: {{userId}}</text>
+      </view>
+    </view>
+    <button class="login-btn" bindtap="login" wx:if="{{!isLoggedIn}}">微信登录</button>
+  </view>
+  
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-group">
+      <view class="menu-item" bindtap="navigateToHistory">
+        <view class="menu-icon history-icon"></view>
+        <text class="menu-text">历史记录</text>
+        <text class="menu-arrow">></text>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateToOrders">
+        <view class="menu-icon order-icon"></view>
+        <text class="menu-text">我的订单</text>
+        <text class="menu-badge" wx:if="{{unreadOrders > 0}}">{{unreadOrders}}</text>
+        <text class="menu-arrow">></text>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateToAddress">
+        <view class="menu-icon address-icon"></view>
+        <text class="menu-text">收货地址</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+    
+    <view class="menu-group">
+      <view class="menu-item" bindtap="navigateToFeedback">
+        <view class="menu-icon feedback-icon"></view>
+        <text class="menu-text">意见反馈</text>
+        <text class="menu-arrow">></text>
+      </view>
+      
+      <view class="menu-item" bindtap="navigateToAbout">
+        <view class="menu-icon about-icon"></view>
+        <text class="menu-text">关于我们</text>
+        <text class="menu-arrow">></text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 活动推广 -->
+  <view class="promo-section">
+    <view class="promo-title">限时活动</view>
+    <view class="promo-card" bindtap="navigateToPromo">
+      <image class="promo-image" src="../../images/promo_banner.jpg" mode="aspectFill"></image>
+      <view class="promo-info">
+        <text class="promo-name">照片打印特惠</text>
+        <text class="promo-desc">首单8折，多买多省</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部提示 -->
+  <view class="footer">
+    <text class="footer-text">照片陪你 v1.0.0</text>
+  </view>
+</view>

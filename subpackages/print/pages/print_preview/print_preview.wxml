@@ -1,0 +1,99 @@
+<!-- print_preview.wxml - 打印效果预览页面 (VOUN风格) -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="back-icon" src="/images/icons/back-icon.svg" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title">打印效果预览</view>
+    <view class="nav-right" bindtap="goToOrder">
+      <text class="next-text">下一步</text>
+    </view>
+  </view>
+
+  <!-- 打印效果预览区域 -->
+  <view class="preview-area">
+    <!-- 打印类型标签 -->
+    <view class="print-type-badge">
+      <text>艺术微喷画报 {{posterSizeText}}</text>
+    </view>
+
+    <!-- 效果预览图 -->
+    <view class="preview-container">
+      <!-- 画报预览 -->
+      <view class="poster-preview">
+        <view class="poster-wall-container">
+          <!-- 使用样式替代墙壁背景图 -->
+          <view class="wall-placeholder"></view>
+          <view class="poster-frame" style="{{posterFrameStyle}}">
+            <image class="poster-image" src="{{imagePath}}" mode="aspectFill"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打印参数设置区域 -->
+  <view class="settings-area">
+    <scroll-view scroll-y="true" class="settings-scroll">
+      <!-- 画报尺寸选择 -->
+      <view class="setting-group">
+        <view class="setting-header">
+          <text class="setting-title">尺寸规格</text>
+        </view>
+        <view class="size-selector">
+          <view class="size-option {{posterSize === 'small' ? 'selected' : ''}}" 
+                bindtap="selectPosterSize" data-size="small">
+            <text class="size-name">小尺寸 (20×30cm)</text>
+          </view>
+          <view class="size-option {{posterSize === 'medium' ? 'selected' : ''}}" 
+                bindtap="selectPosterSize" data-size="medium">
+            <text class="size-name">中尺寸 (40×60cm)</text>
+          </view>
+          <view class="size-option {{posterSize === 'large' ? 'selected' : ''}}" 
+                bindtap="selectPosterSize" data-size="large">
+            <text class="size-name">大尺寸 (60×90cm)</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 打印数量选择 -->
+      <view class="setting-group">
+        <view class="setting-header">
+          <text class="setting-title">打印数量</text>
+        </view>
+        <view class="quantity-selector">
+          <view class="quantity-control" bindtap="decreaseQuantity">
+            <text class="quantity-btn">-</text>
+          </view>
+          <view class="quantity-display">
+            <text>{{quantity}}</text>
+          </view>
+          <view class="quantity-control" bindtap="increaseQuantity">
+            <text class="quantity-btn">+</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 价格显示 -->
+      <view class="setting-group price-display">
+        <view class="price-row">
+          <text class="price-label">单价</text>
+          <text class="price-value">¥{{unitPrice}}</text>
+        </view>
+        <view class="price-row total-price">
+          <text class="price-label">总计</text>
+          <text class="price-value">¥{{totalPrice}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 加载中提示 -->
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <view class="loading-box">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">{{loadingText}}</view>
+    </view>
+  </view>
+</view>

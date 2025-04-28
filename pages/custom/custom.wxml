@@ -1,0 +1,53 @@
+<!-- custom.wxml - LaLaMan定制页面 -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <view class="back-button" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="page-title">照片风格定制</text>
+  </view>
+  
+  <!-- 照片选择区域 -->
+  <view class="photo-section">
+    <view class="photo-container" bindtap="choosePhoto">
+      <block wx:if="{{hasPhoto}}">
+        <image class="selected-photo" src="{{photoPath}}" mode="aspectFill"></image>
+      </block>
+      <block wx:else>
+        <view class="photo-placeholder">
+          <text class="placeholder-icon">+</text>
+          <text class="placeholder-text">点击选择照片</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 风格选择区域 -->
+  <view class="style-section">
+    <view class="section-title">选择风格</view>
+    <view class="style-grid">
+      <view class="style-item {{selectedStyle.id === item.id ? 'selected' : ''}}" 
+            wx:for="{{styleOptions}}" 
+            wx:key="id" 
+            bindtap="selectStyle" 
+            data-id="{{item.id}}">
+        <image class="style-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="style-info">
+          <text class="style-name">{{item.name}}</text>
+          <text class="style-description">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button class="custom-button" bindtap="startCustomization">开始定制</button>
+  </view>
+  
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="footer-text">© 2025 LaLaMan - AI照片增强与风格转绘</text>
+  </view>
+</view>

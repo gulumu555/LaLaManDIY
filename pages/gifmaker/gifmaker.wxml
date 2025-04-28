@@ -1,0 +1,155 @@
+<!-- gifmaker.wxml - GIF动画制作页面 -->
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="page-header">
+    <text class="page-title">GIF动画制作</text>
+    <text class="page-subtitle">将您的照片变成动态壁纸</text>
+  </view>
+  
+  <!-- 图片上传区域 -->
+  <view class="upload-section" wx:if="{{!sourceImage}}">
+    <view class="upload-box" bindtap="chooseImage">
+      <view class="upload-icon"></view>
+      <text class="upload-text">点击上传照片</text>
+      <text class="upload-hint">支持JPG、PNG格式，大小不超过10MB</text>
+    </view>
+  </view>
+  
+  <!-- 图片预览和编辑区域 -->
+  <view class="edit-section" wx:if="{{sourceImage}}">
+    <!-- 原始图片预览 -->
+    <view class="image-preview">
+      <image class="source-image" src="{{sourceImage}}" mode="aspectFit"></image>
+      <view class="image-actions">
+        <view class="action-btn" bindtap="chooseImage">重新选择</view>
+      </view>
+    </view>
+    
+    <!-- 效果选择区域 -->
+    <view class="effect-section">
+      <text class="section-title">选择动画效果</text>
+      
+      <!-- 效果类型选择 -->
+      <view class="effect-tabs">
+        <view class="tab {{effectCategory === 'simple' ? 'active' : ''}}" 
+              bindtap="switchEffectCategory" data-category="simple">
+          基础效果
+        </view>
+        <view class="tab {{effectCategory === 'complex' ? 'active' : ''}}" 
+              bindtap="switchEffectCategory" data-category="complex">
+          高级效果
+        </view>
+      </view>
+      
+      <!-- 基础效果列表 -->
+      <scroll-view class="effect-list" scroll-x="true" wx:if="{{effectCategory === 'simple'}}">
+        <view class="effect-item {{currentEffect === 'pulse' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="pulse">
+          <view class="effect-icon pulse-icon"></view>
+          <text class="effect-name">脉冲</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'zoom' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="zoom">
+          <view class="effect-icon zoom-icon"></view>
+          <text class="effect-name">缩放</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'shake' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="shake">
+          <view class="effect-icon shake-icon"></view>
+          <text class="effect-name">抖动</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'fade' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="fade">
+          <view class="effect-icon fade-icon"></view>
+          <text class="effect-name">淡入淡出</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'rotate' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="rotate">
+          <view class="effect-icon rotate-icon"></view>
+          <text class="effect-name">旋转</text>
+        </view>
+      </scroll-view>
+      
+      <!-- 高级效果列表 -->
+      <scroll-view class="effect-list" scroll-x="true" wx:if="{{effectCategory === 'complex'}}">
+        <view class="effect-item {{currentEffect === 'rain' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="rain">
+          <view class="effect-icon rain-icon"></view>
+          <text class="effect-name">下雨</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'snow' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="snow">
+          <view class="effect-icon snow-icon"></view>
+          <text class="effect-name">下雪</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'fireworks' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="fireworks">
+          <view class="effect-icon fireworks-icon"></view>
+          <text class="effect-name">烟花</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'sparkle' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="sparkle">
+          <view class="effect-icon sparkle-icon"></view>
+          <text class="effect-name">闪烁</text>
+        </view>
+        <view class="effect-item {{currentEffect === 'confetti' ? 'active' : ''}}" 
+              bindtap="selectEffect" data-effect="confetti">
+          <view class="effect-icon confetti-icon"></view>
+          <text class="effect-name">彩带</text>
+        </view>
+      </scroll-view>
+      
+      <!-- 参数调整区域 -->
+      <view class="params-section">
+        <text class="section-title">参数调整</text>
+        
+        <!-- 速度调整 -->
+        <view class="param-item">
+          <text class="param-label">速度</text>
+          <slider class="param-slider" min="1" max="10" value="{{animationSpeed}}" 
+                  block-size="20" block-color="#ffffff" 
+                  activeColor="#007AFF" backgroundColor="#333333"
+                  bindchange="setAnimationSpeed"></slider>
+          <text class="param-value">{{animationSpeed}}</text>
+        </view>
+        
+        <!-- 强度调整 -->
+        <view class="param-item">
+          <text class="param-label">强度</text>
+          <slider class="param-slider" min="1" max="10" value="{{animationIntensity}}" 
+                  block-size="20" block-color="#ffffff" 
+                  activeColor="#007AFF" backgroundColor="#333333"
+                  bindchange="setAnimationIntensity"></slider>
+          <text class="param-value">{{animationIntensity}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 预览和生成按钮 -->
+    <view class="action-buttons">
+      <button class="preview-btn" bindtap="previewAnimation" loading="{{isPreviewLoading}}">预览效果</button>
+      <button class="generate-btn" bindtap="generateGif" loading="{{isGenerating}}">生成GIF</button>
+    </view>
+  </view>
+  
+  <!-- 结果预览区域 -->
+  <view class="result-section" wx:if="{{resultGif}}">
+    <text class="section-title">动画预览</text>
+    <image class="result-gif" src="{{resultGif}}" mode="aspectFit"></image>
+    
+    <!-- 结果操作按钮 -->
+    <view class="result-actions">
+      <button class="action-btn save-btn" bindtap="saveToAlbum">保存到相册</button>
+      <button class="action-btn share-btn" open-type="share">分享</button>
+      <button class="action-btn buy-btn" bindtap="navigateToOrder">制作壁纸</button>
+    </view>
+  </view>
+  
+  <!-- 底部提示 -->
+  <view class="footer-tips">
+    <text class="tip-text">提示：高级效果需要联网处理，可能需要较长时间</text>
+  </view>
+  
+  <!-- 隐藏的Canvas用于本地GIF生成 -->
+  <canvas canvas-id="gifCanvas" style="width: 0px; height: 0px; position: absolute; left: -9999px;"></canvas>
+</view>

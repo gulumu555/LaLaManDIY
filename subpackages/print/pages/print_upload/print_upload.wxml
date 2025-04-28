@@ -1,0 +1,67 @@
+<!-- pages/print_upload/print_upload.wxml -->
+<view class="container">
+  <!-- 选中的规格信息 -->
+  <view class="selected-size-info">
+    <view class="section-title">已选画幅</view>
+    <view class="size-card" wx:if="{{selectedSize}}">
+      <image class="size-image" src="{{selectedSize.imageUrl}}" mode="aspectFit"></image>
+      <view class="size-details">
+        <view class="size-name">{{selectedSize.name}}</view>
+        <view class="size-dimensions">{{selectedSize.size}}</view>
+        <view class="size-price">¥{{selectedSize.price}} / 张</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 上传区域 -->
+  <view class="upload-section">
+    <view class="section-title">上传图片 ({{uploadedImages.length}}/{{maxImageCount}})</view>
+    <view class="upload-description">请上传您想要打印的图片，支持多张上传</view>
+    
+    <!-- 已上传图片网格 -->
+    <view class="image-grid">
+      <!-- 已上传图片 -->
+      <block wx:for="{{uploadedImages}}" wx:key="id">
+        <view class="image-item">
+          <image class="uploaded-image" src="{{item.path}}" mode="aspectFill" bindtap="previewImage" data-id="{{item.id}}"></image>
+          <view class="image-number">{{index + 1}}</view>
+          <view class="delete-button" bindtap="deleteImage" data-id="{{item.id}}">×</view>
+        </view>
+      </block>
+      
+      <!-- 上传按钮 -->
+      <view class="upload-button" bindtap="chooseAndUploadImage" wx:if="{{uploadedImages.length < maxImageCount}}">
+        <view class="upload-icon">+</view>
+        <view class="upload-text">添加图片</view>
+      </view>
+    </view>
+    
+    <!-- 上传中提示 -->
+    <view class="loading-container" wx:if="{{isUploading}}">
+      <view class="loading-text">上传中...</view>
+    </view>
+  </view>
+  
+  <!-- 价格计算区域 -->
+  <view class="price-section">
+    <view class="price-row">
+      <view class="price-label">单价</view>
+      <view class="price-value">¥{{selectedSize.price}} / 张</view>
+    </view>
+    <view class="price-row">
+      <view class="price-label">数量</view>
+      <view class="price-value">{{uploadedImages.length}} 张</view>
+    </view>
+    <view class="price-divider"></view>
+    <view class="price-row total">
+      <view class="price-label">总计</view>
+      <view class="price-value">¥{{totalPrice}}</view>
+    </view>
+  </view>
+  
+  <!-- 底部按钮区域 -->
+  <view class="bottom-buttons">
+    <button class="back-button" bindtap="goBack">返回</button>
+    <button class="continue-button" bindtap="goToOrderConfirm">下一步</button>
+  </view>
+</view>

@@ -1,0 +1,242 @@
+/* pages/print_upload/print_upload.wxss */
+
+/* 整体容器样式 - VOUN黑色风格 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 0 0 120rpx 0;
+  box-sizing: border-box;
+}
+
+/* 通用标题样式 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 30rpx 40rpx 20rpx;
+  color: #ffffff;
+  letter-spacing: 2rpx;
+}
+
+/* 选中的规格信息区域 */
+.selected-size-info {
+  padding: 0 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.size-card {
+  background-color: #111111;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+}
+
+.size-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  background-color: #0a0a0a;
+}
+
+.size-details {
+  flex: 1;
+}
+
+.size-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.size-dimensions {
+  font-size: 24rpx;
+  color: #aaaaaa;
+  margin: 6rpx 0;
+}
+
+.size-price {
+  font-size: 28rpx;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* 上传区域样式 */
+.upload-section {
+  padding: 0 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.upload-description {
+  font-size: 24rpx;
+  color: #aaaaaa;
+  margin: 0 40rpx 20rpx;
+}
+
+/* 图片网格样式 */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.image-item {
+  width: calc((100% - 40rpx) / 3);
+  height: 200rpx;
+  position: relative;
+  border-radius: 8rpx;
+  overflow: hidden;
+  background-color: #111111;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-number {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22rpx;
+  color: #ffffff;
+}
+
+.delete-button {
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  color: #ffffff;
+}
+
+.upload-button {
+  width: calc((100% - 40rpx) / 3);
+  height: 200rpx;
+  background-color: #111111;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2rpx dashed #333333;
+}
+
+.upload-icon {
+  font-size: 60rpx;
+  color: #666666;
+  margin-bottom: 10rpx;
+  line-height: 1;
+}
+
+.upload-text {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* 上传中提示 */
+.loading-container {
+  margin-top: 20rpx;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: #aaaaaa;
+}
+
+/* 价格计算区域 */
+.price-section {
+  padding: 30rpx 40rpx;
+  background-color: #111111;
+  margin: 40rpx 40rpx;
+  border-radius: 12rpx;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.price-row.total {
+  margin-bottom: 0;
+}
+
+.price-label {
+  font-size: 26rpx;
+  color: #aaaaaa;
+}
+
+.price-value {
+  font-size: 26rpx;
+  color: #ffffff;
+}
+
+.price-row.total .price-label,
+.price-row.total .price-value {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.price-divider {
+  height: 1px;
+  background-color: #333333;
+  margin: 20rpx 0;
+}
+
+/* 底部按钮区域 */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 40rpx;
+  background-color: #000000;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.back-button, .continue-button {
+  width: 45%;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
+}
+
+.back-button {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.continue-button {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: bold;
+}

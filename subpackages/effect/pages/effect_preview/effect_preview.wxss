@@ -1,0 +1,155 @@
+/* effect_preview.wxss - 动效预览页面样式 (VOUN风格) */
+
+/* 页面容器 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 页面标题 */
+.header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding-top: 20rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* GIF预览区域 */
+.preview-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 30rpx 0;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.gif-preview {
+  width: 500rpx;
+  height: 500rpx;
+  object-fit: contain;
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
+}
+
+/* 操作按钮区域 */
+.action-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40rpx 0;
+  gap: 20rpx;
+}
+
+.action-button {
+  width: 80%;
+  height: 80rpx;
+  font-size: 30rpx;
+  border-radius: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.save-button {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.share-button {
+  background-color: #f8f8f8;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+.create-button {
+  background-color: #f8f8f8;
+  color: #666666;
+  border: 1px solid #cccccc;
+}
+
+/* 返回按钮 */
+.back-button {
+  position: fixed;
+  left: 30rpx;
+  top: 30rpx;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.back-icon {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+/* 加载中样式 */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-box {
+  width: 200rpx;
+  height: 200rpx;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #ffffff;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,163 @@
+/* custom.wxss - LaLaMan定制页面样式 */
+
+/* 页面容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-bottom: 30rpx;
+}
+
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-icon {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* 照片选择区域 */
+.photo-section {
+  padding: 30rpx;
+}
+
+.photo-container {
+  width: 100%;
+  height: 400rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.selected-photo {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5;
+}
+
+.placeholder-icon {
+  font-size: 80rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+
+.placeholder-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 风格选择区域 */
+.style-section {
+  padding: 0 30rpx 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.style-item {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.style-item.selected {
+  box-shadow: 0 0 0 4rpx #1890ff, 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.style-image {
+  width: 100%;
+  height: 200rpx;
+}
+
+.style-info {
+  padding: 16rpx;
+}
+
+.style-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.style-description {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+}
+
+/* 操作按钮 */
+.action-section {
+  padding: 30rpx;
+}
+
+.custom-button {
+  background-color: #1890ff;
+  color: white;
+  font-size: 32rpx;
+  padding: 20rpx 0;
+  border-radius: 40rpx;
+  width: 100%;
+}
+
+/* 底部信息 */
+.footer {
+  margin-top: auto;
+  padding: 30rpx;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 24rpx;
+  color: #999;
+}
