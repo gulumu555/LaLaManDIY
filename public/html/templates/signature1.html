@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <link rel="stylesheet" href="../static/style.css" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        font-family: sans-serif;
+      }
+
+      .signature-list-item1 {
+        position: relative;
+        width: fit-content;
+      }
+
+      .image {
+        width: 220px;
+        height: 146px;
+        top: 0;
+        left: 0;
+      }
+
+      .image-white {
+        display: none;
+      }
+
+      .signature-list-item1.active .image {
+        display: none;
+      }
+
+      .signature-list-item1.active .image-white {
+        display: block;
+      }
+
+      .date {
+        position: absolute;
+        font-size: 24px;
+        transform: rotate(-22deg);
+        top: 66px;
+        left: 10px;
+        letter-spacing: -2px;
+      }
+
+      .position {
+        position: relative;
+        top: -110px;
+        left: -32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(28deg);
+      }
+
+      .char {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform-origin: 0 46px;
+        font-size: 14px;
+      }
+
+      #signature {
+        width: 30%;
+        transform: translateY(calc(-100% - 20px));
+        margin-right: 20px;
+        position: relative;
+        z-index: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content" class="signature-list-item signature-list-item1">
+      <div class="item">
+        <img src="../static/signature1.svg" class="image" />
+        <div class="date" id="date"></div>
+        <div class="position" id="position"></div>
+      </div>
+    </div>
+    <div id="loading">
+      <div class="loading-content">图片处理中，请稍候...</div>
+    </div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+  ></script>
+  <script src="../static/html2canvas.min.js"></script>
+  <script type="text/javascript" src="../static/utils.js"></script>
+  <script type="text/javascript" src="../static/uni.webview.1.5.6.js"></script>
+  <script src="../static/dayjs.min.js"></script>
+  <script>
+    function renderData() {
+      const date = getUrlParams("date");
+      const street = getUrlParams("street");
+      const width = Number(getUrlParams("width"));
+      document.querySelector("#date").innerHTML =
+        dayjs(date).format("YYYY.MM.DD");
+      const position = document.querySelector("#position");
+      position.innerHTML = ""; // 先清空
+      const chars = street.split("");
+      const len = chars.length;
+      const center = (len - 1) / 2; // 3个字 center=1，4个字 center=1.5
+      chars.forEach((item, index) => {
+        const offset = index - center;
+        // 角度可以根据需要调整，比如26度
+        const angle = offset * 24;
+        position.innerHTML += `<div class="char" style="transform: rotate(${angle}deg) rotate(-63deg);">${item}</div>`;
+      });
+    }
+
+    window.onload = async () => {
+      renderData();
+      generateImage("#content", {
+        scale: 10,
+        callback: async (base64Image) => {
+          console.log("base64Image", base64Image);
+          uni.navigateBack();
+        },
+      });
+    };
+  </script>
+</html>

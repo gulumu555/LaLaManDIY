@@ -1,0 +1,34 @@
+# 运行时文件
+runtime/
+# 日志
+*.log
+logs/
+
+# 依赖包
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 环境配置 (敏感信息)
+.env
+.env.local
+.env.*.local
+
+# 编译输出
+node_modules/
+public/uploads/
+
+# 临时文件
+*.tmp
+*.temp
+tmp/
+temp/
+
+# 测试相关
+test_*.php
+!test_styles.html

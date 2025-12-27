@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <style>
+      .signature-list-item4 {
+        width: fit-content;
+      }
+
+      .signature-list-item4 .item .text-left {
+        text-align: right;
+        padding-right: 54px;
+        background: url("../static/signature4.svg") no-repeat right center;
+        background-size: 34px;
+        position: relative;
+      }
+
+      .signature-list-item4 .item .text-left::after {
+        content: "";
+        position: absolute;
+        width: 1px;
+        right: 44px;
+        top: 0;
+        bottom: 0;
+        background-color: #010101;
+      }
+
+      .signature-list-item4 .item .postion {
+        background: url("../static/signature4-1.svg") no-repeat left center;
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        width: fit-content;
+        padding-left: 18px;
+        background-size: 14px;
+      }
+
+      .signature-list-item4.active .item .text-left {
+        background: url("../static/signature4-white.svg") no-repeat right center;
+      }
+
+      .signature-list-item4.active .item .text-left::after {
+        background-color: #ffffff;
+      }
+
+      .signature-list-item4.active .item .postion {
+        background: url("../static/signature4-1-white.svg") no-repeat left center;
+      }
+
+      .week {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .date {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content" class="signature-list-item4">
+      <div class="item">
+        <div class="text">
+          <div class="text-left">
+            <div class="week" id="week">--</div>
+            <div class="date" id="date">--</div>
+          </div>
+        </div>
+        <div class="postion" id="position">--</div>
+      </div>
+    </div>
+
+    <div id="loading">
+      <div class="loading-content">图片处理中，请稍候...</div>
+    </div>
+  </body>
+
+  <script
+    type="text/javascript"
+    src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+  ></script>
+  <script src="../static/html2canvas.min.js"></script>
+  <script type="text/javascript" src="../static/utils.js"></script>
+  <script type="text/javascript" src="../static/uni.webview.1.5.6.js"></script>
+  <script src="../static/dayjs.min.js"></script>
+  <script>
+    const date = getUrlParams("date");
+    const city = getUrlParams("city");
+    const street = getUrlParams("street");
+    const signatureData = {
+      date,
+      location: {
+        city,
+        street,
+      },
+    };
+
+    function renderSignature(data) {
+      if (!data || !data.date) return;
+
+      document.getElementById("week").textContent = getWeek(data.date);
+      document.getElementById("date").textContent = dayjs(data.date).format(
+        "YYYY.MM.DD"
+      );
+      document.getElementById(
+        "position"
+      ).textContent = `${data.location?.city}.${data.location?.street}`;
+    }
+
+    function handleClick() {
+      const el = document.getElementById("signature4");
+      el.classList.toggle("active");
+      alert("You clicked the signature item");
+    }
+
+    window.onload = () => {
+      renderSignature(signatureData);
+      generateImage("#content", {
+        scale: 10,
+        callback: async (base64Image) => {
+          console.log("base64Image", base64Image);
+          uni.navigateBack();
+        },
+      });
+    };
+  </script>
+</html>

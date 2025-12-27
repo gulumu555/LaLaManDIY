@@ -1,0 +1,58 @@
+.form-spec {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* 将子元素垂直排列 */
+    gap: 16px; /* 设置间距 */
+}
+
+.form-item-total-container {
+    display: flex;
+    flex-direction: column; /* 将子元素垂直排列 */
+    gap: 16px; /* 设置间距 */
+}
+
+.item-container {
+    display: flex;
+    flex-direction: column; /* 将子元素垂直排列 */
+    gap: 16px; /* 设置间距 */
+}
+
+.form-item-container {
+    display: flex;
+    flex-wrap: wrap; /* 允许子元素在必要时换行 */
+    gap: 20px; /* 设置子元素之间的间距 */
+    align-items: flex-start; /* 确保子元素垂直对齐 */
+    margin-top: 20px;
+}
+
+.form-item {
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    margin-bottom: 0;
+}
+
+.form-item label {
+    margin-right: 8px; /* 设置标签和输入框之间的间距 */
+    width: 120px; /* 设置标签的宽度以便对齐 */
+}
+
+.form-item .ant-input {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px; /* 设置输入框的宽度以便对齐 */
+}
+
+.delete-icon {
+    font-size: 30px; /* 适当调整字体大小 */
+    color: grey;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.add-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start; /* 将新增按钮左对齐 */
+    margin-top: 20px; /* 确保新增按钮与表单项之间有一定的间距 */
+}

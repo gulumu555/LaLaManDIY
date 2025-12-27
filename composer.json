@@ -1,0 +1,82 @@
+{
+  "name": "superadminx/admin",
+  "type": "project",
+  "keywords": [
+    "high performance",
+    "http service"
+  ],
+  "homepage": "http://www.superadminx.com",
+  "license": "MIT",
+  "description": "SuperAdminx基于webman的中后台开发框架",
+  "authors": [
+    {
+      "name": "walkor",
+      "email": "walkor@workerman.net",
+      "homepage": "https://www.workerman.net",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "741599086@qq.com",
+    "issues": "https://github.com/walkor/webman/issues",
+    "forum": "http://www.superadminx.com",
+    "source": "https://github.com/walkor/webman"
+  },
+  "require": {
+    "php": ">=8.1",
+    "workerman/webman-framework": "^2.1",
+    "monolog/monolog": "^2.0",
+    "intervention/image": "^3.11",
+    "vlucas/phpdotenv": "^5.6",
+    "workerman/crontab": "^1.0",
+    "webman/push": "^1.1",
+    "w7corp/easywechat": "^6.17",
+    "yansongda/pay": "^3.7",
+    "webman/redis-queue": "^2.1",
+    "webman/think-orm": "^2.1",
+    "webman/event": "^1.0",
+    "webman/cache": "^2.1",
+    "guzzlehttp/guzzle": "^7.9",
+    "hyperf/pimple": "^2.2",
+    "taoser/webman-validate": "^1.7",
+    "webman/console": "^2.1",
+    "webman/redis": "^2.1",
+    "illuminate/events": "^10.48",
+    "hyperf/engine-contract": "*",
+    "workerman/coroutine": "*",
+    "predis/predis": "^3.0",
+    "shopwwi/webman-express": "^1.0",
+    "volcengine/ve-tos-php-sdk": "^2.1",
+    "volcengine/volc-sdk-php": "^1.0",
+    "tencentcloud/hunyuan": "^3.0",
+    "ext-openssl": "*",
+    "ext-libxml": "*",
+    "ext-simplexml": "*",
+    "ext-dom": "*",
+    "ext-zip": "*"
+  },
+  "suggest": {
+    "ext-event": "For better performance. "
+  },
+  "autoload": {
+    "psr-4": {
+      "": "./",
+      "app\\": "./app",
+      "App\\": "./app",
+      "app\\View\\Components\\": "./app/view/components"
+    }
+  },
+  "scripts": {
+    "post-package-install": [
+      "support\\Plugin::install"
+    ],
+    "post-package-update": [
+      "support\\Plugin::install"
+    ],
+    "pre-package-uninstall": [
+      "support\\Plugin::uninstall"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

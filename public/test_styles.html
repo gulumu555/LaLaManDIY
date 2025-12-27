@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedream 4.5 风格测试工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            margin-bottom: 16px;
+            color: #00d2ff;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00d2ff;
+        }
+
+        .styles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .style-btn {
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .style-btn:hover {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.1);
+        }
+
+        .style-btn.selected {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.3);
+        }
+
+        .style-btn .name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .style-btn .key {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .generate-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result img {
+            max-width: 100%;
+            max-height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #00d2ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            color: #ff6b6b;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .preview {
+            margin-top: 16px;
+        }
+
+        .preview img {
+            max-height: 200px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎨 Seedream 4.5 风格转绘测试</h1>
+
+        <div class="section">
+            <h3>1️⃣ 输入你的照片 URL</h3>
+            <input type="text" id="imageUrl" placeholder="粘贴图片 URL，例如：https://xxx.com/photo.jpg">
+            <div class="preview" id="preview"></div>
+        </div>
+
+        <div class="section">
+            <h3>2️⃣ 选择风格（24种可选）</h3>
+            <div class="styles-grid" id="stylesGrid"></div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generate()">🚀 开始转绘</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在使用 Seedream 4.5 转绘中...</p>
+            <p style="color: #888; font-size: 14px;">通常需要 15-45 秒</p>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const styles = [
+            // 动画/插画风格
+            { key: 'ghibli', name: '吉卜力' },
+            { key: 'shinkai', name: '新海诚' },
+            { key: 'pixar', name: '皮克斯' },
+            { key: 'disney', name: '迪士尼' },
+            { key: 'jimmy', name: '几米' },
+            // 经典艺术风格
+            { key: 'oil_painting', name: '油画' },
+            { key: 'watercolor', name: '水彩画' },
+            { key: 'sketch', name: '素描' },
+            { key: 'pixel_art', name: '像素艺术' },
+            { key: 'impressionist', name: '印象派' },
+            { key: 'chinese_ink', name: '国风水墨' },
+            { key: 'pop_art', name: '波普艺术' },
+        ];
+
+        let selectedStyle = null;
+
+        // 渲染风格按钮
+        const grid = document.getElementById('stylesGrid');
+        styles.forEach(style => {
+            const btn = document.createElement('div');
+            btn.className = 'style-btn';
+            btn.innerHTML = `<div class="name">${style.name}</div><div class="key">${style.key}</div>`;
+            btn.onclick = () => selectStyle(style.key, btn);
+            grid.appendChild(btn);
+        });
+
+        function selectStyle(key, btn) {
+            document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedStyle = key;
+        }
+
+        // 预览图片
+        document.getElementById('imageUrl').addEventListener('input', function () {
+            const url = this.value.trim();
+            const preview = document.getElementById('preview');
+            if (url) {
+                preview.innerHTML = `<img src="${url}" onerror="this.style.display='none'" alt="预览">`;
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        async function generate() {
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+            if (!imageUrl) {
+                alert('请输入图片 URL');
+                return;
+            }
+            if (!selectedStyle) {
+                alert('请选择一个风格');
+                return;
+            }
+
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('generateBtn').disabled = true;
+
+            try {
+                const response = await fetch('/api/Test/seedDreamWithStyle', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image: imageUrl,
+                        style: selectedStyle
+                    })
+                });
+
+                const data = await response.json();
+
+                // 后端返回 code: 1 表示成功
+                // data 结构: { model, created, data: [{ url }] }
+                let resultUrl = null;
+
+                if (data.code === 1 && data.data) {
+                    // 尝试多种可能的数据结构
+                    if (data.data.data && data.data.data[0] && data.data.data[0].url) {
+                        resultUrl = data.data.data[0].url;
+                    } else if (data.data[0] && data.data[0].url) {
+                        resultUrl = data.data[0].url;
+                    } else if (data.data.url) {
+                        resultUrl = data.data.url;
+                    }
+                }
+
+                if (resultUrl) {
+                    document.getElementById('result').innerHTML = `
+                        <h3 style="margin-bottom: 16px;">✅ 转绘完成！</h3>
+                        <img src="${resultUrl}" alt="转绘结果">
+                        <p style="margin-top: 16px; color: #888; font-size: 12px; word-break: break-all;">
+                            <a href="${resultUrl}" target="_blank" style="color: #00d2ff;">点击查看大图</a>
+                        </p>
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = `<div class="error">❌ 生成失败: ${JSON.stringify(data)}</div>`;
+                }
+            } catch (err) {
+                document.getElementById('result').innerHTML = `<div class="error">❌ 请求失败: ${err.message}</div>`;
+            }
+
+            document.getElementById('loading').classList.remove('show');
+            document.getElementById('generateBtn').disabled = false;
+        }
+    </script>
+</body>
+
+</html>

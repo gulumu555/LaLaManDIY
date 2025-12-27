@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <style>
+      .signature-list-item3 {
+        width: fit-content;
+      }
+      .signature-list-item3 .item {
+        border-left: 4px solid #010101;
+        padding-left: 12px;
+        font-size: 14px;
+      }
+
+      .signature-list-item3 .year {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1;
+        margin-top: -4px;
+      }
+
+      .signature-list-item3 .month {
+        margin-top: 4px;
+      }
+
+      .signature-list-item3 .postion {
+        margin-top: 4px;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .signature-list-item3.active .item {
+        border-left: 4px solid #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content" class="signature-list-item3">
+      <div class="item">
+        <div class="year" id="year">----</div>
+        <div class="month" id="month">Loading...</div>
+        <div class="week" id="week">---</div>
+        <div class="postion" id="position">--.--</div>
+      </div>
+    </div>
+
+    <div id="loading">
+      <div class="loading-content">图片处理中，请稍候...</div>
+    </div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+  ></script>
+  <script src="../static/html2canvas.min.js"></script>
+  <script type="text/javascript" src="../static/utils.js"></script>
+  <script type="text/javascript" src="../static/uni.webview.1.5.6.js"></script>
+  <script src="../static/dayjs.min.js"></script>
+  <script>
+    const date = getUrlParams("date");
+    const city = getUrlParams("city");
+    const street = getUrlParams("street");
+    const signatureData = {
+      date: date,
+      location: {
+        city,
+        street,
+      },
+    };
+
+    function getOrdinalSuffix(day) {
+      if (day > 3 && day < 21) return "th";
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    }
+
+    function formatDateWithOrdinal(date) {
+      const d = dayjs(date);
+      const month = d.format("MMMM");
+      const day = d.date();
+      return `${month} ${day}${getOrdinalSuffix(day)}`;
+    }
+
+    function getWeekdayName(date) {
+      const weekdays = [
+        "SUNDAY",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+      ];
+      return weekdays[dayjs(date).day()];
+    }
+
+    function renderSignature(data) {
+      document.getElementById("year").textContent = dayjs(data.date).format(
+        "YYYY"
+      );
+      document.getElementById("month").textContent = formatDateWithOrdinal(
+        data.date
+      );
+      document.getElementById("week").textContent = getWeekdayName(data.date);
+      document.getElementById(
+        "position"
+      ).textContent = `${data.location.city}.${data.location.street}`;
+    }
+
+    function handleClick() {
+      alert("Signature item clicked");
+    }
+
+    window.onload = () => {
+      renderSignature(signatureData);
+      generateImage("#content", {
+        scale: 10,
+        callback: async (base64Image) => {
+          console.log("base64Image", base64Image);
+          uni.navigateBack();
+        },
+      });
+    };
+  </script>
+</html>

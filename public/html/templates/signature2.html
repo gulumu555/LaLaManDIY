@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <style>
+      .signature-list-item2 {
+        width: fit-content;
+      }
+      .signature-list-item2 .item {
+        display: flex;
+        font-size: 24px;
+        background: url(../static/signature2.svg) left center no-repeat;
+        background-size: auto 100%;
+      }
+
+      .signature-list-item2 .quarter-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+
+      .signature-list-item2 .text {
+        margin-top: 12px;
+        margin-left: -48px;
+      }
+
+      .signature-list-item2.active .quarter-circle {
+        background: conic-gradient(
+          transparent 150deg,
+          transparent 60deg,
+          #ffffff 60deg,
+          #ffffff 270deg
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signature-list-item2" id="content">
+      <div class="item">
+        <div class="quarter-circle"></div>
+        <div class="text">
+          <div class="date" id="date"></div>
+          <div class="position" id="position"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading">
+      <div class="loading-content">图片处理中，请稍候...</div>
+    </div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+  ></script>
+  <script src="../static/html2canvas.min.js"></script>
+  <script type="text/javascript" src="../static/utils.js"></script>
+  <script type="text/javascript" src="../static/uni.webview.1.5.6.js"></script>
+  <script src="../static/dayjs.min.js"></script>
+  <script>
+    const date = getUrlParams("date");
+    const city = getUrlParams("city");
+    const street = getUrlParams("street");
+    const signatureData = {
+      date,
+      location: {
+        city,
+        street,
+      },
+    };
+
+    function onClick() {
+      // 如果嵌入在 web-view 中
+      if (window.WeixinJSBridge) {
+        WeixinJSBridge.invoke("postMessage", {
+          type: "click",
+          payload: signatureData,
+        });
+      } else if (window.parent) {
+        // 或用 window.postMessage
+        window.parent.postMessage(
+          { type: "click", payload: signatureData },
+          "*"
+        );
+      }
+    }
+
+    function render() {
+      const dateEl = document.getElementById("date");
+      const posEl = document.getElementById("position");
+      if (!signatureData.date) return;
+
+      dateEl.textContent = dayjs(signatureData.date).format("YYYY.MM.DD");
+      posEl.textContent =
+        (signatureData.location?.street || "") +
+        "." +
+        getWeek(signatureData.date);
+    }
+
+    window.onload = () => {
+      render();
+      generateImage("#content", {
+        scale: 10,
+        callback: async (base64Image) => {
+          console.log("base64Image", base64Image);
+          uni.navigateBack();
+        },
+      });
+    };
+  </script>
+</html>

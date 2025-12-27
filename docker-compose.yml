@@ -1,0 +1,53 @@
+services:
+  # PHP + Webman 应用
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lalaman-app
+    ports:
+      - "8111:8111"
+    volumes:
+      - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      - DB_HOST=mysql
+      - REDIS_HOST=redis
+    networks:
+      - lalaman-network
+    command: >
+      sh -c "composer install --no-dev --optimize-autoloader 2>/dev/null; php start.php start"
+
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: lalaman-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: XbC13v)R
+      MYSQL_DATABASE: db_lalaman
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lalaman-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: lalaman-redis
+    ports:
+      - "6380:6379"
+    networks:
+      - lalaman-network
+
+networks:
+  lalaman-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  vendor_data:

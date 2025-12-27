@@ -1,0 +1,18 @@
+#loading {
+  position: fixed;
+  background-color: #000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 5;
+}
+
+#loading .loading-content {
+  margin-top: -20vh;
+}
+
+img {
+    vertical-align: middle;
+  }

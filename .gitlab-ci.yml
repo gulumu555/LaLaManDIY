@@ -1,0 +1,28 @@
+stages:
+  - test
+
+update-dev:
+  stage: test
+  only:
+    - dev
+  script:
+    - cd /www2/$CI_PROJECT_NAME
+    - git pull
+    - php83 /www2/$CI_PROJECT_NAME/start.php restart -d
+    - |
+      if git diff --name-only HEAD~1 HEAD | grep -q "^public/"; then
+        echo "检测到public目录有变化，执行前端构建..."
+        cd /www2/$CI_PROJECT_NAME/public
+        docker run -i --rm -v "$(dirname $(pwd)):/app" -v lalaman_node_modules:/app/public/admin_react/node_modules -w /app/public/admin_react node:20-alpine sh -c "npm config set registry https://registry.npmmirror.com && npm ci --silent && npm run build"
+      else
+        echo "public目录无变化，跳过前端构建"
+      fi
+    - |
+      if git diff --name-only HEAD~1 HEAD | grep -q "^composer.json"; then
+        echo "检测到composer.json有变化，执行composer install..."
+        cd /www2/$CI_PROJECT_NAME && /opt/remi/php83/root/bin/php /usr/local/bin/composer install
+      else
+        echo "composer.json无变化，跳过composer install"
+      fi
+  tags:
+    - test223
