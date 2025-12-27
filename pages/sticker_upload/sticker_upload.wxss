@@ -1,0 +1,258 @@
+/* pages/sticker_upload/sticker_upload.wxss */
+
+/* 整体容器样式 */
+.container {
+  padding: 0 0 120rpx 0;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 标题样式 */
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 30rpx 40rpx 20rpx;
+  color: #333333;
+}
+
+/* 已选信息区域样式 */
+.selected-info {
+  padding: 0 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.info-card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  color: #666666;
+  font-size: 28rpx;
+}
+
+.info-value {
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.info-value.price {
+  color: #ff4d4f;
+}
+
+/* 上传区域样式 */
+.upload-section {
+  padding: 0 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.upload-description {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 20rpx;
+  margin-left: 40rpx;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10rpx;
+}
+
+.image-item {
+  width: calc(33.33% - 20rpx);
+  margin: 10rpx;
+  position: relative;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 220rpx;
+  display: block;
+  object-fit: cover;
+}
+
+.image-number {
+  position: absolute;
+  bottom: 10rpx;
+  left: 10rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.delete-button {
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 32rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.upload-button {
+  width: calc(33.33% - 20rpx);
+  height: 220rpx;
+  margin: 10rpx;
+  background-color: #f0f0f0;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.upload-icon {
+  font-size: 60rpx;
+  color: #999999;
+  line-height: 1;
+  margin-bottom: 10rpx;
+}
+
+.upload-text {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.loading-container {
+  width: 100%;
+  padding: 20rpx 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+/* 价格计算区域样式 */
+.price-section {
+  padding: 30rpx 40rpx;
+  background-color: #ffffff;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.price-row:last-child {
+  margin-bottom: 0;
+}
+
+.price-row.total {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.price-label {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.price-value {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.price-row.total .price-value {
+  font-size: 36rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* 数量控制区域 */
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-button {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  border-radius: 30rpx;
+}
+
+.quantity-number {
+  width: 80rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+/* 底部按钮区域样式 */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 20rpx 40rpx;
+  background-color: #ffffff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.back-button, .continue-button {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}
+
+.back-button {
+  background-color: #f0f0f0;
+  color: #666666;
+  margin-right: 20rpx;
+}
+
+.continue-button {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.continue-button[disabled] {
+  background-color: #cccccc;
+  color: #ffffff;
+}

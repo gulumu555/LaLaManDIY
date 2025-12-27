@@ -1,0 +1,32 @@
+<!-- effect_preview.wxml - 动效预览页面 (VOUN风格) -->
+<view class="container">
+  <view class="header">
+    <view class="title">动效预览</view>
+    <view class="subtitle">您的照片已成功转换为动态效果</view>
+  </view>
+
+  <!-- GIF预览区域 -->
+  <view class="preview-section">
+    <image class="gif-preview" src="{{gifUrl}}" mode="aspectFit"></image>
+  </view>
+
+  <!-- 操作按钮区域 -->
+  <view class="action-section">
+    <button class="action-button save-button" bindtap="saveToAlbum">保存到相册</button>
+    <button class="action-button share-button" bindtap="shareGif">分享</button>
+    <button class="action-button create-button" bindtap="createNew">创建新动效</button>
+  </view>
+
+  <!-- 加载中提示 -->
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <view class="loading-box">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">{{loadingText}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- 返回按钮 -->
+<view class="back-button" bindtap="goBack">
+  <image class="back-icon" src="/images/icons/back-icon.svg" mode="aspectFit"></image>
+</view>

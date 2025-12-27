@@ -1,0 +1,60 @@
+<!-- pages/sticker_service/sticker_service.wxml -->
+<view class="container">
+  <!-- 顶部Banner -->
+  <view class="banner">
+    <image class="banner-image" src="/images/print/sticker_banner.jpg" mode="aspectFill"></image>
+    <view class="banner-text">不干胶打印服务</view>
+  </view>
+  
+  <!-- 服务简介 -->
+  <view class="intro-section">
+    <view class="section-title">不干胶打印简介</view>
+    <view class="intro-text">
+      不干胶打印采用高品质防水材料，色彩鲜艳持久，可贴于手机、电脑、水杯等多种物品表面。我们的不干胶贴纸防水防晒，不易褪色，使用寿命长，是个性化装饰的理想选择。
+    </view>
+  </view>
+  
+  <!-- 贴纸规格选择区域 -->
+  <view class="section-title">贴纸规格</view>
+  <view class="size-selection">
+    <block wx:for="{{stickerSizes}}" wx:key="id">
+      <view class="size-card {{selectedSize.id === item.id ? 'selected' : ''}}" 
+            bindtap="selectStickerSize" 
+            data-id="{{item.id}}">
+        <view class="size-image-container">
+          <image class="size-image" src="{{item.imageUrl}}" mode="aspectFit"></image>
+        </view>
+        <view class="size-info">
+          <view class="size-name">{{item.name}}</view>
+          <view class="size-dimensions">{{item.size}}</view>
+          <view class="size-price">¥{{item.price}}</view>
+          <view class="size-description">{{item.description}}</view>
+        </view>
+        <view class="select-button" wx:if="{{selectedSize.id === item.id}}">选择此规格</view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 贴纸材质选择 -->
+  <view class="section-title">贴纸材质</view>
+  <view class="material-selection">
+    <block wx:for="{{materials}}" wx:key="id">
+      <view class="material-card {{selectedMaterial.id === item.id ? 'selected' : ''}}" 
+            bindtap="selectMaterial" 
+            data-id="{{item.id}}">
+        <view class="material-info">
+          <view class="material-name">{{item.name}}</view>
+          <view class="material-price">{{item.priceAdjustment >= 0 ? '+' : ''}}¥{{item.priceAdjustment}}</view>
+          <view class="material-description">{{item.description}}</view>
+        </view>
+        <view class="select-indicator" wx:if="{{selectedMaterial.id === item.id}}">✓</view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 底部导航按钮 -->
+  <view class="bottom-buttons">
+    <button class="back-button" bindtap="goBack">返回</button>
+    <button class="continue-button" bindtap="goToUpload">继续</button>
+  </view>
+</view>

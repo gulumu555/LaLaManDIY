@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#111111"/>
+  <rect x="10" y="30" width="180" height="140" rx="5" fill="#333333" stroke="white" stroke-width="2"/>
+  <text x="100" y="100" font-family="Arial" font-size="16" fill="white" text-anchor="middle">大幅</text>
+  <text x="100" y="125" font-family="Arial" font-size="12" fill="#cccccc" text-anchor="middle">60×40cm</text>
+</svg>

@@ -1,0 +1,102 @@
+<!-- pages/print_order/print_order.wxml -->
+<view class="container">
+  <!-- 订单信息摘要 -->
+  <view class="order-summary">
+    <view class="section-title">订单信息</view>
+    <view class="order-card" wx:if="{{orderData}}">
+      <!-- 规格信息 -->
+      <view class="order-item">
+        <view class="item-label">画幅规格</view>
+        <view class="item-value">{{orderData.printSize.name}} ({{orderData.printSize.size}})</view>
+      </view>
+      
+      <!-- 数量信息 -->
+      <view class="order-item">
+        <view class="item-label">打印数量</view>
+        <view class="item-value">{{orderData.quantity}} 张</view>
+      </view>
+      
+      <!-- 单价信息 -->
+      <view class="order-item">
+        <view class="item-label">单价</view>
+        <view class="item-value">¥{{orderData.printSize.price}} / 张</view>
+      </view>
+      
+      <!-- 小计 -->
+      <view class="order-item">
+        <view class="item-label">小计</view>
+        <view class="item-value">¥{{orderData.totalPrice}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 图片预览 -->
+  <view class="images-preview">
+    <view class="section-title">打印图片 ({{orderData.images.length}})</view>
+    <scroll-view scroll-x="true" class="images-scroll">
+      <block wx:for="{{orderData.images}}" wx:key="id">
+        <image class="preview-image" src="{{item.path}}" mode="aspectFill" bindtap="previewImage" data-id="{{item.id}}"></image>
+      </block>
+    </scroll-view>
+  </view>
+  
+  <!-- 收货地址 -->
+  <view class="address-section">
+    <view class="section-title">收货地址</view>
+    <view class="address-card" bindtap="chooseAddress">
+      <block wx:if="{{address}}">
+        <view class="address-info">
+          <view class="address-name-phone">
+            <text class="address-name">{{address.name}}</text>
+            <text class="address-phone">{{address.phone}}</text>
+          </view>
+          <view class="address-detail">{{address.fullAddress}}</view>
+        </view>
+        <view class="address-arrow">></view>
+      </block>
+      <block wx:else>
+        <view class="address-placeholder">
+          <view class="address-placeholder-text">请选择收货地址</view>
+        </view>
+        <view class="address-arrow">></view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 备注信息 -->
+  <view class="remark-section">
+    <view class="section-title">备注信息</view>
+    <view class="remark-input-container">
+      <textarea class="remark-input" placeholder="请输入备注信息（选填）" placeholder-style="color: #666666;" bindinput="onRemarkInput" value="{{remark}}" maxlength="200"></textarea>
+      <view class="remark-count">{{remark.length}}/200</view>
+    </view>
+  </view>
+  
+  <!-- 价格计算 -->
+  <view class="price-calculation">
+    <view class="price-row">
+      <view class="price-label">商品金额</view>
+      <view class="price-value">¥{{orderData.totalPrice}}</view>
+    </view>
+    <view class="price-row">
+      <view class="price-label">运费</view>
+      <view class="price-value">¥{{shippingFee}}</view>
+    </view>
+    <view class="price-divider"></view>
+    <view class="price-row total">
+      <view class="price-label">实付款</view>
+      <view class="price-value">¥{{finalPrice}}</view>
+    </view>
+  </view>
+  
+  <!-- 底部支付栏 -->
+  <view class="payment-bar">
+    <view class="total-amount">
+      <text class="amount-label">合计：</text>
+      <text class="amount-value">¥{{finalPrice}}</text>
+    </view>
+    <button class="payment-button {{isSubmitting ? 'disabled' : ''}}" bindtap="submitOrder" disabled="{{isSubmitting}}">
+      {{isSubmitting ? '提交中...' : '提交订单'}}
+    </button>
+  </view>
+</view>

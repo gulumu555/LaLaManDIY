@@ -1,0 +1,2 @@
+<!-- components/offscreen-canvas/offscreen-canvas.wxml -->
+<canvas canvas-id="offscreenCanvas" style="width: {{width}}px; height: {{height}}px; position: absolute; left: -9999px; top: -9999px;"></canvas>

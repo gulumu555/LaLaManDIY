@@ -1,0 +1,89 @@
+<!-- style_result.wxml - 风格效果页面 (VOUN风格) -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="back-icon" src="/images/icons/back-icon.svg" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title">选择风格</view>
+    <view class="nav-right" bindtap="applyStyle">
+      <text class="next-text">应用</text>
+    </view>
+  </view>
+
+  <!-- 使用提示悬浮层 -->
+  <view class="tips-container" wx:if="{{showTips}}">
+    <view class="tips-content">
+      <view class="tips-title">使用提示</view>
+      <view class="tips-text">1. 左右滑动查看更多风格分类</view>
+      <view class="tips-text">2. 点击风格预览效果</view>
+      <view class="tips-text">3. 点击"应用"生成艺术图</view>
+    </view>
+  </view>
+
+  <!-- 上部分：效果展示区 (占2/3) -->
+  <view class="style-preview-area">
+    <!-- 原图 / 处理后图片切换 -->
+    <view class="preview-switch-container" bindtap="togglePreview">
+      <text class="preview-switch-text">{{ showOriginal ? '查看效果' : '查看原图' }}</text>
+    </view>
+
+    <!-- 预览区域 -->
+    <block wx:if="{{showOriginal}}">
+      <image class="preview-image" src="{{imagePath}}" mode="aspectFit"></image>
+    </block>
+    <block wx:else>
+      <image class="preview-image {{previewLoading ? 'hidden' : ''}}" 
+             src="{{stylePreviewUrl || '/images/sample_style.jpg'}}" 
+             mode="aspectFit"
+             bindload="onPreviewLoaded"></image>
+      
+      <!-- 预览加载中显示原图并添加加载指示器 -->
+      <view class="preview-loading-container" wx:if="{{previewLoading}}">
+        <image class="preview-image faded" src="{{imagePath}}" mode="aspectFit"></image>
+        <view class="preview-loading">
+          <view class="preview-loading-spinner"></view>
+          <text class="preview-loading-text">生成预览中...</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 下部分：风格选择区 (占1/3) -->
+  <view class="style-selector-area">
+    <!-- 风格分类选择 -->
+    <scroll-view class="category-scroll" scroll-x="true" show-scrollbar="{{false}}">
+      <view class="category-list">
+        <block wx:for="{{styleCategories}}" wx:key="id">
+          <view class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+                bindtap="switchCategory" data-category="{{item.id}}">
+            <text class="category-name">{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+
+    <!-- 具体风格选择 -->
+    <scroll-view class="style-scroll" scroll-x="true" show-scrollbar="{{false}}">
+      <view class="style-list">
+        <block wx:for="{{styles}}" wx:key="id">
+          <view class="style-item {{selectedStyle === item.id ? 'selected' : ''}}" 
+                bindtap="selectStyle" data-style="{{item.id}}">
+            <view class="style-icon-container">
+              <image class="style-icon" src="{{item.icon}}" mode="aspectFit"></image>
+            </view>
+            <text class="style-name">{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <!-- 加载中提示 -->
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <view class="loading-box">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">{{loadingText}}</view>
+    </view>
+  </view>
+</view>

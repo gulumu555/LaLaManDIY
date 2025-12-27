@@ -1,0 +1,43 @@
+<!-- index.wxml - 首页 (VOUN风格) -->
+<view class="container">
+  <!-- 瀑布流不同画风样例展示区 -->
+  <scroll-view scroll-y="true" class="gallery-scroll" bindscroll="onPageScroll" show-scrollbar="{{false}}">
+    <view class="gallery-container">
+      <!-- 使用wx:for循环渲染单行大图 VOUN风格 -->
+      <block wx:for="{{artStyles}}" wx:key="id">
+        <view class="gallery-item {{index === activeIndex ? 'active' : ''}}">
+          <view class="style-card">
+            <!-- 画风样例大图 -->
+            <image 
+              class="gallery-image {{item.id}}" 
+              src="{{item.image}}" 
+              mode="widthFix"
+              lazy-load="true"
+            ></image>
+            
+            <!-- 画风名称标签 -->
+            <view class="style-info">
+              <view class="style-name">{{item.name}}</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 完全独立的底部悬浮导航按钮 - VOUN风格 -->
+<!-- 左侧动效按钮（乘号×） -->
+<view class="float-button effect-btn" bindtap="goToEffect">
+  <image class="button-icon" src="/images/icons/multiply-icon.svg" mode="aspectFit"></image>
+</view>
+
+<!-- 中间风格按钮（加号+） -->
+<view class="float-button style-btn" bindtap="goToUpload">
+  <image class="button-icon" src="/images/icons/plus-icon.svg" mode="aspectFit"></image>
+</view>
+
+<!-- 右侧打印按钮（等号=） -->
+<view class="float-button print-btn" bindtap="goToPrintService">
+  <image class="button-icon" src="/images/icons/equals-icon.svg" mode="aspectFit"></image>
+</view>

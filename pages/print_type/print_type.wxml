@@ -1,0 +1,56 @@
+<!-- pages/print_type/print_type.wxml -->
+<view class="container">
+  <!-- 顶部Banner -->
+  <view class="banner">
+    <image class="banner-image" src="/images/print/print_banner.jpg" mode="aspectFill"></image>
+    <view class="banner-text">照片打印服务</view>
+  </view>
+  
+  <!-- 服务简介 -->
+  <view class="intro-section">
+    <view class="section-title">打印服务简介</view>
+    <view class="intro-text">
+      LaLaManDIY提供高品质的照片打印服务，满足您不同场景的需求。无论是贴在手机上的不干胶贴纸，还是装饰墙面的艺术微喷画报，我们都能为您提供专业的打印解决方案。
+    </view>
+  </view>
+  
+  <!-- 打印类型选择区域 -->
+  <view class="section-title">选择打印类型</view>
+  <view class="type-selection">
+    <!-- 不干胶打印选项 -->
+    <view class="type-card {{selectedType === 'sticker' ? 'selected' : ''}}" 
+          bindtap="selectPrintType" 
+          data-type="sticker">
+      <view class="type-image-container">
+        <image class="type-image" src="/images/print/sticker_print.jpg" mode="aspectFill"></image>
+      </view>
+      <view class="type-info">
+        <view class="type-name">不干胶打印</view>
+        <view class="type-price">¥19.9 起</view>
+        <view class="type-description">适合贴在手机、电脑等物品上，防水耐用</view>
+      </view>
+      <view class="select-indicator" wx:if="{{selectedType === 'sticker'}}">已选择</view>
+    </view>
+    
+    <!-- 艺术微喷画报选项 -->
+    <view class="type-card {{selectedType === 'artprint' ? 'selected' : ''}}" 
+          bindtap="selectPrintType" 
+          data-type="artprint">
+      <view class="type-image-container">
+        <image class="type-image" src="/images/print/art_print.jpg" mode="aspectFill"></image>
+      </view>
+      <view class="type-info">
+        <view class="type-name">艺术微喷画报</view>
+        <view class="type-price">¥39.9 起</view>
+        <view class="type-description">标准尺寸90×60cm，支持定制，适合墙面装饰</view>
+      </view>
+      <view class="select-indicator" wx:if="{{selectedType === 'artprint'}}">已选择</view>
+    </view>
+  </view>
+  
+  <!-- 底部导航按钮 -->
+  <view class="bottom-buttons">
+    <button class="back-button" bindtap="goBack">返回</button>
+    <button class="continue-button" bindtap="goToNextStep" disabled="{{!selectedType}}">继续</button>
+  </view>
+</view>

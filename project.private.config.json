@@ -1,14 +1,24 @@
 {
-  "libVersion": "3.13.0",
-  "projectname": "lalaman-master",
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "projectname": "%25E7%2585%25A7%25E7%2589%2587%25E9%2599%25AA%25E4%25BD%25A0",
   "setting": {
-    "urlCheck": true,
-    "coverView": true,
+    "compileHotReLoad": true,
+    "urlCheck": false,
+    "coverView": false,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,
     "preloadBackgroundData": false,
     "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "compileHotReLoad": true
-  }
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": false,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false
+  },
+  "libVersion": "3.0.2",
+  "condition": {}
 }

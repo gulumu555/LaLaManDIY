@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="750" height="300" viewBox="0 0 750 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="750" height="300" fill="#222222"/>
+  <rect x="50" y="50" width="200" height="200" rx="10" fill="#333333" stroke="white" stroke-width="2"/>
+  <rect x="275" y="50" width="200" height="200" rx="10" fill="#333333" stroke="white" stroke-width="2"/>
+  <rect x="500" y="50" width="200" height="200" rx="10" fill="#333333" stroke="white" stroke-width="2"/>
+  <text x="375" y="150" font-family="Arial" font-size="24" fill="white" text-anchor="middle">艺术微喷服务</text>
+  <text x="375" y="180" font-family="Arial" font-size="16" fill="#cccccc" text-anchor="middle">高品质艺术打印，让创意永存</text>
+</svg>

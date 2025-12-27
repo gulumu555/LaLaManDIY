@@ -1,0 +1,195 @@
+/* preview.wxss - 处理结果预览页面样式 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  padding: 15rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部：最终图片预览 */
+.result-preview {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20rpx;
+  height: 55vh; /* 稍微减小图片区域高度，为下方功能区腾出空间 */
+}
+
+.result-image {
+  width: 95%;
+  height: 100%;
+  border-radius: 16rpx;
+}
+
+/* 中间：精度选择区域 */
+.resolution-options {
+  width: 100%;
+  margin-bottom: 30rpx; /* 增加与下方按钮区域的间距 */
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  padding-left: 20rpx;
+}
+
+.resolution-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 15rpx;
+}
+
+.resolution-item {
+  width: 30%; /* 改为三列布局 */
+  background-color: #222;
+  border-radius: 12rpx;
+  padding: 12rpx 8rpx;
+  margin-bottom: 15rpx;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  border: 2rpx solid transparent;
+}
+
+.resolution-item.selected {
+  border-color: #00FF00;
+}
+
+.resolution-label {
+  font-size: 24rpx;
+  font-weight: bold;
+  margin-bottom: 5rpx;
+}
+
+.resolution-size {
+  font-size: 20rpx;
+  color: #999;
+  margin-bottom: 5rpx;
+}
+
+.resolution-free {
+  font-size: 20rpx;
+  color: #00FF00;
+}
+
+.resolution-premium {
+  font-size: 20rpx;
+  color: #FFA500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 返回按钮 */
+.back-button {
+  position: fixed;
+  top: 40rpx;
+  left: 30rpx;
+  z-index: 100;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-icon {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+/* 底部按钮区域 */
+.action-buttons {
+  width: 100%;
+  padding: 0 15rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx; /* 改为固定间距，不再使用auto */
+  margin-bottom: 40rpx; /* 添加底部间距，避免太靠近底部 */
+}
+
+.main-button {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #000;
+  color: #00FF00;
+  border: 2rpx solid #00FF00;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15rpx;
+}
+
+.secondary-buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.secondary-button {
+  width: 32%;
+  height: 70rpx;
+  line-height: 70rpx;
+  background-color: #222;
+  color: #fff;
+  border-radius: 35rpx;
+  font-size: 24rpx;
+  padding: 0;
+  margin-bottom: 10rpx;
+}
+
+/* 加载提示 */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loading-container {
+  background-color: #222;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 80rpx;
+  height: 80rpx;
+  border: 6rpx solid #00FF00;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #fff;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

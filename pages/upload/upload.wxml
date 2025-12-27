@@ -1,0 +1,52 @@
+<!-- upload.wxml - 照片上传页面 -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <view class="back-arrow"></view>
+    </view>
+    <view class="nav-title" bindtap="openAlbum">
+    </view>
+    <view class="nav-right-placeholder"></view>
+  </view>
+  
+  <!-- 照片选择区/预览区 -->
+  <view class="content-area">
+    <!-- 已选择照片时显示预览 -->
+    <block wx:if="{{tempImagePath}}">
+      <view class="preview-area">
+        <!-- 图片预览 -->
+        <view class="image-container">
+          <image 
+            class="preview-image" 
+            src="{{tempImagePath}}" 
+            mode="aspectFit"
+            bindload="onImageLoad"
+          ></image>
+        </view>
+        
+        <!-- 重新选择按钮 -->
+        <view class="reselect-btn" bindtap="openAlbum">
+          <text class="reselect-btn-icon">+</text>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 未选择照片时显示选择按钮 -->
+    <block wx:else>
+      <view class="upload-placeholder">
+        <view class="center-content">
+          <image class="upload-icon" src="/images/icons/camera-icon.svg" mode="aspectFit" bindtap="openCamera"></image>
+          <view class="upload-btn" bindtap="openAlbum">从相册选择</view>
+          <text class="upload-tip">支持JPG、PNG等常见图片格式，单张图片不超过10MB</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 加载指示器 -->
+  <view class="loading-mask" wx:if="{{isLoading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{loadingText}}</text>
+  </view>
+</view>

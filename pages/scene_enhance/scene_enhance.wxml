@@ -1,0 +1,171 @@
+<!-- scene_enhance.wxml - 场景增强页面 (VOUN风格) -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">场景优化</text>
+    <text class="page-subtitle">选择使用场景，自动优化您的图片</text>
+  </view>
+
+  <!-- 上传区域 -->
+  <view class="upload-section">
+    <view class="upload-box" bindtap="chooseImage" wx:if="{{!sourceImage}}">
+      <view class="upload-icon"></view>
+      <text class="upload-text">点击上传图片</text>
+      <text class="upload-hint">支持JPG、PNG格式</text>
+    </view>
+    <view class="image-preview" wx:if="{{sourceImage}}">
+      <image class="source-image" src="{{sourceImage}}" mode="aspectFill"></image>
+      <view class="image-actions">
+        <text class="action-btn" bindtap="chooseImage">重新选择</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 场景选择区域 -->
+  <view class="scene-section" wx:if="{{sourceImage}}">
+    <text class="section-title">选择使用场景</text>
+    
+    <!-- 场景类别选项卡 -->
+    <view class="scene-tabs">
+      <view class="tab {{sceneCategory === 'mobile' ? 'active' : ''}}" 
+            bindtap="switchSceneCategory" data-category="mobile">手机壁纸</view>
+      <view class="tab {{sceneCategory === 'print' ? 'active' : ''}}" 
+            bindtap="switchSceneCategory" data-category="print">实体打印</view>
+      <view class="tab {{sceneCategory === 'social' ? 'active' : ''}}" 
+            bindtap="switchSceneCategory" data-category="social">社交媒体</view>
+    </view>
+    
+    <!-- 手机壁纸场景选项 -->
+    <scroll-view class="scene-list" scroll-x="true" wx:if="{{sceneCategory === 'mobile'}}">
+      <view class="scene-item {{currentScene === 'iphone15' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="iphone15">
+        <view class="scene-icon iphone-icon"></view>
+        <text class="scene-name">iPhone 15</text>
+        <text class="scene-desc">1170×2532</text>
+      </view>
+      <view class="scene-item {{currentScene === 'iphone14' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="iphone14">
+        <view class="scene-icon iphone-icon"></view>
+        <text class="scene-name">iPhone 14</text>
+        <text class="scene-desc">1170×2532</text>
+      </view>
+      <view class="scene-item {{currentScene === 'iphone13' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="iphone13">
+        <view class="scene-icon iphone-icon"></view>
+        <text class="scene-name">iPhone 13</text>
+        <text class="scene-desc">1170×2532</text>
+      </view>
+      <view class="scene-item {{currentScene === 'huawei' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="huawei">
+        <view class="scene-icon android-icon"></view>
+        <text class="scene-name">华为</text>
+        <text class="scene-desc">1080×2340</text>
+      </view>
+      <view class="scene-item {{currentScene === 'xiaomi' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="xiaomi">
+        <view class="scene-icon android-icon"></view>
+        <text class="scene-name">小米</text>
+        <text class="scene-desc">1080×2400</text>
+      </view>
+      <view class="scene-item {{currentScene === 'oppo' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="oppo">
+        <view class="scene-icon android-icon"></view>
+        <text class="scene-name">OPPO</text>
+        <text class="scene-desc">1080×2400</text>
+      </view>
+    </scroll-view>
+    
+    <!-- 实体打印场景选项 -->
+    <scroll-view class="scene-list" scroll-x="true" wx:if="{{sceneCategory === 'print'}}">
+      <view class="scene-item {{currentScene === 'poster_small' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="poster_small">
+        <view class="scene-icon poster-icon"></view>
+        <text class="scene-name">小海报</text>
+        <text class="scene-desc">A4尺寸</text>
+      </view>
+      <view class="scene-item {{currentScene === 'poster_medium' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="poster_medium">
+        <view class="scene-icon poster-icon"></view>
+        <text class="scene-name">中海报</text>
+        <text class="scene-desc">A3尺寸</text>
+      </view>
+      <view class="scene-item {{currentScene === 'poster_large' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="poster_large">
+        <view class="scene-icon poster-icon"></view>
+        <text class="scene-name">大海报</text>
+        <text class="scene-desc">A2尺寸</text>
+      </view>
+      <view class="scene-item {{currentScene === 'canvas_small' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="canvas_small">
+        <view class="scene-icon canvas-icon"></view>
+        <text class="scene-name">小画布</text>
+        <text class="scene-desc">30×40cm</text>
+      </view>
+      <view class="scene-item {{currentScene === 'canvas_medium' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="canvas_medium">
+        <view class="scene-icon canvas-icon"></view>
+        <text class="scene-name">中画布</text>
+        <text class="scene-desc">50×70cm</text>
+      </view>
+      <view class="scene-item {{currentScene === 'canvas_large' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="canvas_large">
+        <view class="scene-icon canvas-icon"></view>
+        <text class="scene-name">大画布</text>
+        <text class="scene-desc">70×100cm</text>
+      </view>
+    </scroll-view>
+    
+    <!-- 社交媒体场景选项 -->
+    <scroll-view class="scene-list" scroll-x="true" wx:if="{{sceneCategory === 'social'}}">
+      <view class="scene-item {{currentScene === 'wechat' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="wechat">
+        <view class="scene-icon wechat-icon"></view>
+        <text class="scene-name">微信</text>
+        <text class="scene-desc">朋友圈</text>
+      </view>
+      <view class="scene-item {{currentScene === 'weibo' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="weibo">
+        <view class="scene-icon weibo-icon"></view>
+        <text class="scene-name">微博</text>
+        <text class="scene-desc">标准尺寸</text>
+      </view>
+      <view class="scene-item {{currentScene === 'douyin' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="douyin">
+        <view class="scene-icon douyin-icon"></view>
+        <text class="scene-name">抖音</text>
+        <text class="scene-desc">封面图</text>
+      </view>
+      <view class="scene-item {{currentScene === 'xiaohongshu' ? 'active' : ''}}" 
+            bindtap="selectScene" data-scene="xiaohongshu">
+        <view class="scene-icon xiaohongshu-icon"></view>
+        <text class="scene-name">小红书</text>
+        <text class="scene-desc">方形图</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons" wx:if="{{sourceImage && currentScene}}">
+    <button class="preview-btn" bindtap="previewImage" loading="{{isPreviewLoading}}">预览</button>
+    <button class="generate-btn" bindtap="generateImage" loading="{{isGenerating}}">生成图片</button>
+  </view>
+
+  <!-- 结果区域 -->
+  <view class="result-section" wx:if="{{resultImage}}">
+    <text class="section-title">处理结果</text>
+    <image class="result-image" src="{{resultImage}}" mode="aspectFit"></image>
+    <view class="result-actions">
+      <button class="action-btn save-btn" bindtap="saveToAlbum">保存到相册</button>
+      <button class="action-btn share-btn" open-type="share">分享</button>
+      <button class="action-btn buy-btn" bindtap="navigateToOrder">立即购买</button>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tips">
+    <text class="tip-text">提示：选择合适的场景可以获得最佳的图片效果</text>
+  </view>
+
+  <!-- 离屏Canvas组件 -->
+  <offscreen-canvas width="2000" height="2000"></offscreen-canvas>
+</view>

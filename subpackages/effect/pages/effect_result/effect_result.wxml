@@ -1,0 +1,94 @@
+<!-- effect_result.wxml - 动效选择页面 (VOUN风格) -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="back-icon" src="/images/icons/back-icon.svg" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title">选择动效</view>
+    <view class="nav-right" bindtap="createEffect">
+      <text class="next-text">应用</text>
+    </view>
+  </view>
+
+  <!-- 使用提示悬浮层 -->
+  <view class="tips-container" wx:if="{{showTips}}">
+    <view class="tips-content">
+      <view class="tips-title">使用提示</view>
+      <view class="tips-text">1. 左右滑动查看更多动效分类</view>
+      <view class="tips-text">2. 点击动效预览效果</view>
+      <view class="tips-text">3. 点击"应用"生成GIF</view>
+    </view>
+  </view>
+
+  <!-- 上部分：效果展示区 (占2/3) -->
+  <view class="effect-preview-area">
+    <!-- 当前为演示阶段，使用固定的样本图片 -->
+    <block wx:if="{{selectedEffect === 'bounce'}}">
+      <image class="preview-image bounce-animation" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+    <block wx:elif="{{selectedEffect === 'rotate'}}">
+      <image class="preview-image rotate-animation" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+    <block wx:elif="{{selectedEffect === 'shake'}}">
+      <image class="preview-image shake-animation" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+    <block wx:elif="{{selectedEffect === 'fade'}}">
+      <image class="preview-image fade-animation" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+    <block wx:elif="{{selectedEffect === 'zoom'}}">
+      <image class="preview-image zoom-animation" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+    <block wx:elif="{{selectedEffect === 'sparkle'}}">
+      <view class="sparkle-container">
+        <image class="preview-image" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+        <view class="sparkle sparkle-1"></view>
+        <view class="sparkle sparkle-2"></view>
+        <view class="sparkle sparkle-3"></view>
+        <view class="sparkle sparkle-4"></view>
+        <view class="sparkle sparkle-5"></view>
+      </view>
+    </block>
+    <block wx:else>
+      <image class="preview-image" src="/images/sample_portrait.jpg" mode="aspectFit"></image>
+    </block>
+  </view>
+
+  <!-- 下部分：动效选择区 (占1/3) -->
+  <view class="effect-selector-area">
+    <!-- 动效分类选择 -->
+    <scroll-view class="category-scroll" scroll-x="true" show-scrollbar="{{false}}">
+      <view class="category-list">
+        <block wx:for="{{effectCategories}}" wx:key="id">
+          <view class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+                bindtap="switchCategory" data-category="{{item.id}}">
+            <text class="category-name">{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+
+    <!-- 具体动效选择 -->
+    <scroll-view class="effect-scroll" scroll-x="true" show-scrollbar="{{false}}">
+      <view class="effect-list">
+        <block wx:for="{{effects}}" wx:key="id">
+          <view class="effect-item {{selectedEffect === item.id ? 'selected' : ''}}" 
+                bindtap="selectEffect" data-effect="{{item.id}}">
+            <view class="effect-icon-container">
+              <image class="effect-icon" src="{{item.icon}}" mode="aspectFit"></image>
+            </view>
+            <text class="effect-name">{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <!-- 加载中提示 -->
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <view class="loading-box">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">{{loadingText}}</view>
+    </view>
+  </view>
+</view>

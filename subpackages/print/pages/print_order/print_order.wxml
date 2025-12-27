@@ -1,0 +1,150 @@
+<!-- pages/print_order/print_order.wxml -->
+<view class="container">
+  <!-- 订单信息摘要 -->
+  <view class="order-summary">
+    <view class="section-title">订单信息</view>
+    <view class="order-card" wx:if="{{orderData}}">
+      <!-- 规格信息 -->
+      <view class="order-item">
+        <view class="item-label">画幅规格</view>
+        <view class="item-value">{{orderData.printSize.name}} ({{orderData.printSize.size}})</view>
+      </view>
+      
+      <!-- 数量信息 -->
+      <view class="order-item">
+        <view class="item-label">打印数量</view>
+        <view class="item-value">{{orderData.quantity}} 张</view>
+      </view>
+      
+      <!-- 单价信息 -->
+      <view class="order-item">
+        <view class="item-label">单价</view>
+        <view class="item-value">¥{{orderData.printSize.price}} / 张</view>
+      </view>
+      
+      <!-- 小计 -->
+      <view class="order-item">
+        <view class="item-label">小计</view>
+        <view class="item-value">¥{{orderData.totalPrice}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 图片预览 -->
+  <view class="images-preview">
+    <view class="section-title">打印图片 ({{orderData.images.length}})</view>
+    <scroll-view scroll-x="true" class="images-scroll">
+      <block wx:for="{{orderData.images}}" wx:key="id">
+        <image class="preview-image" src="{{item.path}}" mode="aspectFill" bindtap="previewImage" data-id="{{item.id}}"></image>
+      </block>
+    </scroll-view>
+  </view>
+  
+  <!-- 收货地址 -->
+  <view class="address-section">
+    <view class="section-title">收货地址</view>
+    <view class="address-card" bindtap="chooseAddress">
+      <block wx:if="{{address}}">
+        <view class="address-info">
+          <view class="address-name-phone">
+            <text class="address-name">{{address.name}}</text>
+            <text class="address-phone">{{address.phone}}</text>
+          </view>
+          <view class="address-detail">{{address.fullAddress}}</view>
+        </view>
+        <view class="address-arrow">></view>
+      </block>
+      <block wx:else>
+        <view class="address-placeholder">
+          <view class="address-placeholder-text">请选择收货地址</view>
+        </view>
+        <view class="address-arrow">></view>
+      </block>
+    </view>
+    <!-- 手动输入地址开关 -->
+    <view class="manual-address-toggle" bindtap="toggleManualAddress">
+      <text class="toggle-text">{{showManualAddress ? '使用已有地址' : '手动输入地址'}}</text>
+    </view>
+    
+    <!-- 手动输入地址表单 -->
+    <view class="manual-address-form" wx:if="{{showManualAddress}}">
+      <view class="form-item">
+        <input class="form-input" placeholder="收件人姓名" value="{{manualAddress.name}}" bindinput="onManualAddressInput" data-field="name" />
+      </view>
+      <view class="form-item">
+        <input class="form-input" placeholder="手机号码" type="number" maxlength="11" value="{{manualAddress.phone}}" bindinput="onManualAddressInput" data-field="phone" />
+      </view>
+      
+      <!-- 省份选择 -->
+      <view class="form-item">
+        <picker mode="selector" range="{{provinces}}" range-key="name" value="{{provinceIndex}}" bindchange="onProvinceChange">
+          <view class="picker-view {{provinceIndex > -1 ? '' : 'placeholder'}}">
+            {{provinceIndex > -1 ? provinces[provinceIndex].name : '请选择省份'}}
+            <view class="picker-arrow"></view>
+          </view>
+        </picker>
+      </view>
+      
+      <!-- 城市选择 -->
+      <view class="form-item">
+        <picker mode="selector" range="{{cities}}" range-key="name" value="{{cityIndex}}" bindchange="onCityChange" disabled="{{provinceIndex < 0}}">
+          <view class="picker-view {{cityIndex > -1 ? '' : 'placeholder'}}">
+            {{cityIndex > -1 ? cities[cityIndex].name : '请选择城市'}}
+            <view class="picker-arrow"></view>
+          </view>
+        </picker>
+      </view>
+      
+      <!-- 区县选择 -->
+      <view class="form-item">
+        <picker mode="selector" range="{{districts}}" range-key="name" value="{{districtIndex}}" bindchange="onDistrictChange" disabled="{{cityIndex < 0}}">
+          <view class="picker-view {{districtIndex > -1 ? '' : 'placeholder'}}">
+            {{districtIndex > -1 ? districts[districtIndex].name : '请选择区/县'}}
+            <view class="picker-arrow"></view>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <textarea class="form-textarea" placeholder="详细地址" value="{{manualAddress.detailAddress}}" bindinput="onManualAddressInput" data-field="detailAddress" />
+      </view>
+    </view>
+  </view>
+  
+  <!-- 备注信息 -->
+  <view class="remark-section">
+    <view class="section-title">备注信息</view>
+    <view class="remark-input-container">
+      <textarea class="remark-input" placeholder="请输入备注信息（选填）" placeholder-style="color: #666666;" bindinput="onRemarkInput" value="{{remark}}" maxlength="200"></textarea>
+      <view class="remark-count">{{remark.length}}/200</view>
+    </view>
+  </view>
+  
+  <!-- 价格计算 -->
+  <view class="price-calculation">
+    <view class="price-row">
+      <view class="price-label">商品金额</view>
+      <view class="price-value">¥{{orderData.totalPrice}}</view>
+    </view>
+    <view class="price-row">
+      <view class="price-label">运费</view>
+      <view class="price-value">¥{{shippingFee}}</view>
+    </view>
+    <view class="price-divider"></view>
+    <view class="price-row total">
+      <view class="price-label">实付款</view>
+      <view class="price-value">¥{{finalPrice}}</view>
+    </view>
+  </view>
+  
+  <!-- 底部支付栏 -->
+  <view class="payment-bar">
+    <view class="total-amount">
+      <text class="amount-label">合计：</text>
+      <text class="amount-value">¥{{finalPrice}}</text>
+    </view>
+    <button class="payment-button {{isSubmitting ? 'disabled' : ''}}" bindtap="submitOrder" disabled="{{isSubmitting}}">
+      {{isSubmitting ? '提交中...' : '提交订单'}}
+    </button>
+  </view>
+</view>

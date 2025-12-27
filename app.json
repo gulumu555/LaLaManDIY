@@ -1,0 +1,72 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/upload/upload",
+    "pages/user/user",
+    "pages/print_type/print_type",
+    "pages/sticker_service/sticker_service",
+    "pages/sticker_upload/sticker_upload",
+    "pages/print_service/print_service",
+    "pages/print_upload/print_upload",
+    "pages/print_upload/photo_select",
+    "pages/print_order/print_order"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "啦啦漫",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#000000",
+    "backgroundColor": "#000000",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": ""
+      },
+      {
+        "pagePath": "pages/upload/upload",
+        "text": ""
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": ""
+      }
+    ]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "subPackages": [
+    {
+      "root": "subpackages/print",
+      "pages": [
+        "pages/print_service/print_service",
+        "pages/print_upload/print_upload",
+        "pages/print_order/print_order",
+        "pages/print_preview/print_preview"
+      ]
+    },
+    {
+      "root": "subpackages/style",
+      "pages": [
+        "pages/style_select/style_select",
+        "pages/style_select/photo_select",
+        "pages/style_result/style_result",
+        "pages/process/process",
+        "pages/preview/preview"
+      ]
+    },
+    {
+      "root": "subpackages/effect",
+      "pages": [
+        "pages/effect_select/effect_select",
+        "pages/effect_result/effect_result",
+        "pages/effect_preview/effect_preview"
+      ]
+    }
+  ]
+}

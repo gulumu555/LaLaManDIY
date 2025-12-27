@@ -1,0 +1,43 @@
+<!-- pages/print_service/print_service.wxml -->
+<view class="container">
+  <!-- 顶部Banner -->
+  <view class="banner">
+    <image class="banner-image" src="/images/print/print_banner.jpg" mode="aspectFill"></image>
+    <view class="banner-text">艺术微喷服务</view>
+  </view>
+  
+  <!-- 服务简介 -->
+  <view class="intro-section">
+    <view class="section-title">微喷服务简介</view>
+    <view class="intro-text">
+      艺术微喷是一种高品质的艺术复制打印技术，采用专业微喷设备和艺术级颜料墨水，能够呈现丰富细腻的色彩层次和精准的细节表现。我们使用进口艺术纸张，确保每一幅作品都具有专业展览级的品质和长久的保存性能。
+    </view>
+  </view>
+  
+  <!-- 画幅规格选择区域 -->
+  <view class="section-title">画幅规格</view>
+  <view class="size-selection">
+    <block wx:for="{{printSizes}}" wx:key="id">
+      <view class="size-card {{selectedSize.id === item.id ? 'selected' : ''}}" 
+            bindtap="selectPrintSize" 
+            data-id="{{item.id}}">
+        <view class="size-image-container">
+          <image class="size-image" src="{{item.compareImageUrl}}" mode="aspectFit"></image>
+        </view>
+        <view class="size-info">
+          <view class="size-name">{{item.name}}</view>
+          <view class="size-dimensions">{{item.size}}</view>
+          <view class="size-price">¥{{item.price}} <text wx:if="{{item.id === 'custom'}}">起</text></view>
+          <view class="size-description">{{item.description}}</view>
+        </view>
+        <view class="select-button" wx:if="{{selectedSize.id === item.id}}">选择此规格</view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 底部导航按钮 -->
+  <view class="bottom-buttons">
+    <button class="back-button" bindtap="goBack">返回</button>
+    <button class="continue-button" bindtap="goToUpload">继续</button>
+  </view>
+</view>

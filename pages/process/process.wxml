@@ -1,0 +1,84 @@
+<!-- process.wxml - 照片处理选择页面 -->
+<view class="container">
+  <!-- 原始照片预览 -->
+  <view class="original-photo card">
+    <view class="section-title">原始照片</view>
+    <view class="photo-container">
+      <image src="{{photoInfo.path}}" mode="aspectFit" class="photo-image"></image>
+    </view>
+    <view class="photo-info">
+      <text class="info-text">分辨率: {{photoInfo.width}} x {{photoInfo.height}}</text>
+    </view>
+  </view>
+  
+  <!-- 处理选项 -->
+  <view class="process-options card">
+    <view class="section-title">选择处理方式</view>
+    
+    <!-- 选项卡 -->
+    <view class="tabs">
+      <view class="tab {{currentTab === 'resolution' ? 'active' : ''}}" bindtap="switchTab" data-tab="resolution">
+        <text class="tab-text">提高分辨率</text>
+      </view>
+      <view class="tab {{currentTab === 'style' ? 'active' : ''}}" bindtap="switchTab" data-tab="style">
+        <text class="tab-text">风格转换</text>
+      </view>
+    </view>
+    
+    <!-- 分辨率提升选项 -->
+    <view class="tab-content" wx:if="{{currentTab === 'resolution'}}">
+      <view class="resolution-options">
+        <view class="resolution-option {{selectedResolution === '2x' ? 'active' : ''}}" bindtap="selectResolution" data-resolution="2x">
+          <view class="option-header">
+            <text class="option-title">标准提升 (2x)</text>
+            <text class="option-badge">推荐</text>
+          </view>
+          <text class="option-desc">将照片分辨率提高2倍，适合大多数场景</text>
+          <text class="option-result">处理后: {{photoInfo.width * 2}} x {{photoInfo.height * 2}}</text>
+        </view>
+        
+        <view class="resolution-option {{selectedResolution === '4x' ? 'active' : ''}}" bindtap="selectResolution" data-resolution="4x">
+          <view class="option-header">
+            <text class="option-title">高级提升 (4x)</text>
+            <text class="option-badge premium">高级</text>
+          </view>
+          <text class="option-desc">将照片分辨率提高4倍，适合打印大尺寸照片</text>
+          <text class="option-result">处理后: {{photoInfo.width * 4}} x {{photoInfo.height * 4}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 风格转换选项 -->
+    <view class="tab-content" wx:if="{{currentTab === 'style'}}">
+      <view class="style-options">
+        <view class="style-option {{selectedStyle === style.id ? 'active' : ''}}" 
+              wx:for="{{styles}}" 
+              wx:for-item="style" 
+              wx:key="id"
+              bindtap="selectStyle" 
+              data-style="{{style.id}}">
+          <image src="{{style.sampleImage}}" class="style-sample" mode="aspectFill"></image>
+          <view class="style-info">
+            <text class="style-name">{{style.name}}</text>
+            <text class="style-desc">{{style.description}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 处理按钮 -->
+  <view class="process-action">
+    <button class="btn btn-primary btn-block" bindtap="startProcessing" disabled="{{!canProcess}}">开始处理</button>
+    <text class="process-note">注意: 处理时间取决于照片大小和选择的处理方式</text>
+  </view>
+  
+  <!-- 加载提示 -->
+  <view class="loading-mask" wx:if="{{isLoading}}">
+    <view class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">{{loadingText}}</text>
+      <progress percent="{{processProgress}}" stroke-width="4" activeColor="#6C5CE7" backgroundColor="#ddd" class="loading-progress"></progress>
+    </view>
+  </view>
+</view>

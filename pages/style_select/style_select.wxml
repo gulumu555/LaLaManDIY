@@ -1,0 +1,43 @@
+<!-- style_select.wxml - 风格选择页面 (VOUN风格) -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <view class="back-arrow"></view>
+    </view>
+    <view class="nav-center">
+      <image class="voun-logo" src="{{vounLogo}}" mode="aspectFit"></image>
+    </view>
+    <view class="nav-right" bindtap="saveImage">
+      <text class="save-text">保存</text>
+    </view>
+  </view>
+  
+  <!-- 效果图预览区 -->
+  <view class="preview-area">
+    <image class="preview-image" src="{{imagePath}}" mode="aspectFit"></image>
+  </view>
+  
+  <!-- 风格类别选择区 -->
+  <view class="category-selector">
+    <block wx:for="{{categories}}" wx:key="id">
+      <view class="category-item {{currentCategoryIndex === index ? 'active' : ''}}" 
+            bindtap="switchCategory" 
+            data-index="{{index}}">
+        <text>{{item.name}}</text>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 具体风格选择区 -->
+  <scroll-view class="style-list" scroll-x="true" show-scrollbar="{{false}}">
+    <block wx:for="{{styles[categories[currentCategoryIndex].id]}}" wx:key="id">
+      <view class="style-item" bindtap="selectStyle" data-id="{{item.id}}">
+        <view class="style-icon-container">
+          <image class="style-icon" src="{{item.icon}}" mode="aspectFill"></image>
+        </view>
+        <text class="style-name">{{item.name}}</text>
+      </view>
+    </block>
+  </scroll-view>
+</view>

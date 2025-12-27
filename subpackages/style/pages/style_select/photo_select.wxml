@@ -1,0 +1,56 @@
+<!-- photo_select.wxml - 风格功能照片选择页面 (VOUN风格) -->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-header">
+    <view class="back-button" bindtap="goBack">
+      <image class="back-icon" src="/images/icons/back-icon.svg" mode="aspectFit"></image>
+    </view>
+    <view class="album-selector" bindtap="toggleAlbumPanel">
+      <text>{{currentAlbumName || '所有照片'}}</text>
+      <image class="dropdown-icon" src="/images/icons/dropdown-icon.svg" mode="aspectFit"></image>
+    </view>
+    <view class="next-button" bindtap="goToStyleSelection">下一步</view>
+  </view>
+
+  <!-- 选中的照片预览区 -->
+  <view class="selected-image-area">
+    <image class="selected-image" src="{{selectedImage}}" mode="aspectFill" wx:if="{{selectedImage}}"></image>
+    <view class="no-image-placeholder" wx:else>
+      <text>请选择一张照片</text>
+    </view>
+  </view>
+
+  <!-- 照片选择区域 -->
+  <view class="photo-grid-container">
+    <scroll-view class="photo-grid" scroll-y="true" enable-flex="true">
+      <block wx:for="{{photoList}}" wx:key="id">
+        <view class="photo-item {{selectedImageIndex === index ? 'selected' : ''}}" 
+              bindtap="selectImage" data-index="{{index}}" data-path="{{item.path}}">
+          <image class="photo-thumbnail" src="{{item.path}}" mode="aspectFill"></image>
+          <view class="select-indicator" wx:if="{{selectedImageIndex === index}}"></view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 相册选择浮层 -->
+  <view class="album-panel" wx:if="{{showAlbumPanel}}">
+    <view class="album-list">
+      <block wx:for="{{albumList}}" wx:key="id">
+        <view class="album-item {{currentAlbum === item.id ? 'active' : ''}}" 
+              bindtap="selectAlbum" data-album-id="{{item.id}}" data-album-name="{{item.name}}">
+          <text>{{item.name}}</text>
+          <text class="album-count">{{item.count}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 加载中提示 -->
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <view class="loading-box">
+      <image class="loading-icon" src="/images/icons/loading.gif" mode="aspectFit"></image>
+      <view class="loading-text">{{loadingText || '加载中...'}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,227 @@
+/* pages/sticker_service/sticker_service.wxss */
+
+/* 整体容器样式 */
+.container {
+  padding: 0 0 120rpx 0;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 顶部Banner样式 */
+.banner {
+  width: 100%;
+  height: 300rpx;
+  position: relative;
+  margin-bottom: 40rpx;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-text {
+  position: absolute;
+  bottom: 40rpx;
+  left: 40rpx;
+  color: #ffffff;
+  font-size: 48rpx;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 服务简介区域样式 */
+.intro-section {
+  padding: 0 40rpx 40rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 20rpx 40rpx;
+  color: #333333;
+}
+
+.intro-text {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #666666;
+}
+
+/* 贴纸规格选择区域样式 */
+.size-selection {
+  padding: 0 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.size-card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+  padding: 30rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.size-card.selected {
+  border: 2rpx solid #000000;
+  transform: translateY(-4rpx);
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.size-image-container {
+  width: 160rpx;
+  height: 160rpx;
+  margin-right: 30rpx;
+  overflow: hidden;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+.size-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.size-info {
+  flex: 1;
+}
+
+.size-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  color: #333333;
+}
+
+.size-dimensions {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 10rpx;
+}
+
+.size-price {
+  font-size: 30rpx;
+  color: #ff4d4f;
+  margin-bottom: 10rpx;
+  font-weight: 500;
+}
+
+.size-description {
+  font-size: 26rpx;
+  color: #999999;
+  line-height: 1.5;
+}
+
+.select-button {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 8rpx 16rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+}
+
+/* 贴纸材质选择区域样式 */
+.material-selection {
+  padding: 0 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.material-card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.material-card.selected {
+  border: 2rpx solid #000000;
+  background-color: #f9f9f9;
+}
+
+.material-info {
+  flex: 1;
+}
+
+.material-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  color: #333333;
+}
+
+.material-price {
+  font-size: 28rpx;
+  color: #ff4d4f;
+  margin-bottom: 10rpx;
+}
+
+.material-description {
+  font-size: 26rpx;
+  color: #999999;
+  line-height: 1.5;
+}
+
+.select-indicator {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  margin-left: 20rpx;
+}
+
+/* 底部按钮区域样式 */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 20rpx 40rpx;
+  background-color: #ffffff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.back-button, .continue-button {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}
+
+.back-button {
+  background-color: #f0f0f0;
+  color: #666666;
+  margin-right: 20rpx;
+}
+
+.continue-button {
+  background-color: #000000;
+  color: #ffffff;
+}
