@@ -50,7 +50,7 @@ class SeedDreamStyles
                 'key' => 'jimmy',
                 'name' => '几米',
                 'name_en' => 'Jimmy Liao',
-                'prompt' => 'Jimmy Liao illustration style, whimsical and poetic, soft pastel colors, dreamy and melancholic atmosphere, children book illustration, emotional storytelling, gentle brush strokes, lonely but warm feeling, Taiwanese picture book art',
+                'prompt' => 'Jimmy Liao illustration style, soft grainy texture, muted watercolor and pastel colors, dreamy atmosphere, gentle brush strokes, simplistic hand-drawn art, clean composition, high quality art, keep original composition',
                 'sort' => 5,
             ],
 
@@ -103,6 +103,13 @@ class SeedDreamStyles
                 'name_en' => 'Pop Art',
                 'prompt' => 'pop art style, Andy Warhol inspired, bold colors, comic book dots, high contrast, vibrant and eye-catching, graphic design aesthetic, modern art',
                 'sort' => 12,
+            ],
+            [
+                'key' => 'ghibli_watercolor',
+                'name' => '吉卜力水彩',
+                'name_en' => 'Ghibli Watercolor',
+                'prompt' => 'Studio Ghibli style, hand-painted watercolor medium, heavy watercolor texture, fresh and natural atmosphere, soft warm lighting, transparent watercolor tones, delicate brushstrokes, visible paper texture, wet-on-wet technique, healing and serene, high quality art, anime style, keep original composition, faithful to original content',
+                'sort' => 13,
             ],
         ];
     }

@@ -97,7 +97,7 @@ class SeedDream4
      * @param string $size 图像尺寸，默认 '2k'
      * @return array API 响应
      */
-    public static function generateWithStyle(string $image, string $styleKey, string $userPrompt = '', string $size = '2k'): array
+    public static function generateWithStyle(string $image, string $styleKey, string $userPrompt = '', string $size = '2k', float $strength = 0.6): array
     {
         // 验证风格是否有效
         if (!SeedDreamStyles::isValidStyle($styleKey)) {
@@ -120,6 +120,7 @@ class SeedDream4
                     'prompt' => $prompt,
                     'image' => $image,
                     'size' => $size,
+                    'strength' => $strength,
                     'watermark' => false,
                     'response_format' => 'url',
                 ],
