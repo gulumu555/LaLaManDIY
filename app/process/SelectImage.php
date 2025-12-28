@@ -11,14 +11,14 @@ use Workerman\Crontab\Crontab;
 
 class SelectImage
 {
-// 新增版本标识属性
-    private static $version = '1.0.2';
+    // 新增版本标识属性
+    private static $version = '1.2.0';
 
     public function onWorkerStart(): void
     {
         // 增加版本检查日志
         //Log::info("SelectImage进程启动，版本号：" . self::$version);
-        new Crontab('* * * * * *', function(){
+        new Crontab('* * * * * *', function () {
             self::taskImage();
         });
     }
@@ -29,7 +29,8 @@ class SelectImage
 
         $redis_key = 'photo:order:task';
         $redis_data = $redis->lpop($redis_key);
-        if (!$redis_data) return;
+        if (!$redis_data)
+            return;
 
         try {
             $data = json_decode($redis_data, true);
@@ -48,10 +49,10 @@ class SelectImage
                 return;
             }
 
-            $filename = 'photo_order_ai_img_'. $data['id'] . '_' . $data['generateUuid'] . '.png';
+            $filename = 'photo_order_ai_img_' . $data['id'] . '_' . $data['generateUuid'] . '.png';
 
             $nodeId = $data['style_param']['nodeId'] ?? 0;
-            $filter_image = array_filter($return['data']['images'], function ($item) use($nodeId){
+            $filter_image = array_filter($return['data']['images'], function ($item) use ($nodeId) {
                 return $item['auditStatus'] == 3 && (!$nodeId || ($nodeId == $item['nodeId']));
             });
             $images = reset($filter_image);
@@ -82,7 +83,7 @@ class SelectImage
                 'ai_original_img' => $url,
             ]);
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             Log::channel('fail')->error("task:" . $e->getMessage());
             abort($e->getMessage());
         }
