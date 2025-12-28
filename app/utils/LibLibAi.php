@@ -22,7 +22,7 @@ class LibLibAi
         return json_decode($templateJson, true);
     }
 
-    public static function createTask($templateJson, $image_url,$prompt)
+    public static function createTask($templateJson, $image_url, $prompt)
     {
         try {
             $url = "/api/generate/comfyui/app";
@@ -138,5 +138,101 @@ class LibLibAi
         } catch (\Exception $e) {
             abort($e->getMessage());
         }
+    }
+
+    /**
+     * 使用 LibLib 预设风格生成图像（图生图）
+     * 
+     * @param string $imageUrl 输入图片 URL
+     * @param string $styleKey 风格 key (如 'thick_paint_2d', 'korean_qversion' 等)
+     * @param string $prompt 额外的提示词（可选）
+     * @return array API 响应，包含 generateUuid
+     */
+    public static function generateWithStyle(string $imageUrl, string $styleKey, string $prompt = ''): array
+    {
+        // 验证风格是否有效
+        if (!LibLibStyles::isValidStyle($styleKey)) {
+            abort("无效的风格: {$styleKey}");
+        }
+
+        $style = LibLibStyles::getStyleByKey($styleKey);
+        $workflowUuid = $style['workflow_uuid'];
+        $stableParams = $style['stable_params'];
+
+        // 检查是否已配置工作流 UUID
+        if ($workflowUuid === 'YOUR_WORKFLOW_UUID_HERE') {
+            abort("风格 {$styleKey} 的工作流 UUID 尚未配置，请在 LibLibStyles.php 中设置");
+        }
+
+        try {
+            $url = "/api/generate/comfyui/app";
+            $client = new \GuzzleHttp\Client();
+            $sendUrl = getenv("LIBLIB_BASE_URL") . $url . "?" . self::generateSign($url);
+
+            // 构建生成参数，使用稳定参数确保输出一致性
+            $generateParams = [
+                'workflowUuid' => $workflowUuid,
+                // 输入图片节点 - 具体节点 ID 需要根据实际工作流调整
+                'input_image' => [
+                    'class_type' => 'LoadImage',
+                    'inputs' => [
+                        'image' => $imageUrl,
+                    ]
+                ],
+                // 稳定参数 - 确保可复现的输出
+                'sampler' => [
+                    'class_type' => 'KSampler',
+                    'inputs' => [
+                        'seed' => $stableParams['seed'],
+                        'steps' => $stableParams['steps'],
+                        'cfg' => $stableParams['cfg_scale'],
+                        'sampler_name' => $stableParams['sampler'],
+                        'denoise' => $stableParams['denoise'],
+                    ]
+                ],
+            ];
+
+            // 如果有额外提示词，添加到参数中
+            if (!empty($prompt)) {
+                $generateParams['prompt_text'] = [
+                    'class_type' => 'CLIPTextEncode',
+                    'inputs' => [
+                        'text' => $prompt,
+                    ]
+                ];
+            }
+
+            $response = $client->post($sendUrl, [
+                "headers" => [
+                    "Content-Type" => "application/json",
+                ],
+                "json" => [
+                    "generateParams" => $generateParams
+                ]
+            ]);
+
+            $result = json_decode($response->getBody()->getContents(), true);
+
+            // 添加使用的风格信息到返回结果
+            $result['style_used'] = [
+                'key' => $styleKey,
+                'name' => $style['name'],
+            ];
+
+            return $result;
+
+        } catch (\Exception $e) {
+            abort("LibLib 风格生成失败: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * 获取所有可用的 LibLib 风格列表
+     * 
+     * @return array 风格列表
+     */
+    public static function getAvailableStyles(): array
+    {
+        return LibLibStyles::getStyleList();
     }
 }
