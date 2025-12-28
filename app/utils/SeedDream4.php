@@ -97,33 +97,67 @@ class SeedDream4
      * @param string $size 图像尺寸，默认 '2k'
      * @return array API 响应
      */
-    public static function generateWithStyle(string $image, string $styleKey, string $userPrompt = '', string $size = '2k', float $strength = 0.6): array
+    public static function generateWithStyle($image, string $styleKey, string $userPrompt = '', string $size = '2k', float $strength = 0.6): array
     {
         // 验证风格是否有效
-        if (!SeedDreamStyles::isValidStyle($styleKey)) {
+        $styleConfig = SeedDreamStyles::getStyleByKey($styleKey);
+        if (!$styleConfig) {
             abort("无效的风格: {$styleKey}");
         }
 
         $client = new Client();
 
-        // 构建完整提示词
-        $prompt = SeedDreamStyles::buildPrompt($styleKey, $userPrompt);
+        // 基础提示词构建
+        $finalPrompt = SeedDreamStyles::buildPrompt($styleKey, $userPrompt);
+
+        // 构建图片集合
+        $imageInput = [];
+
+        // 1. 用户上传的图（Structure Reference）
+        if (is_array($image)) {
+            $imageInput = array_merge($imageInput, $image);
+        } else {
+            $imageInput[] = $image;
+        }
+
+        // 2. 风格参考图（Style Reference）
+        if (isset($styleConfig['reference_images']) && is_array($styleConfig['reference_images'])) {
+            $refImages = $styleConfig['reference_images'];
+            if (!empty($refImages)) {
+                // 将参考图加入输入列表
+                $imageInput = array_merge($imageInput, $refImages);
+
+                // 动态构建提示词前缀，明确图片角色
+                // Image 1 (index 0) = Structure
+                // Image 2..N = Style
+                $structureRefIndex = 1;
+                $styleRefStart = 2;
+                $styleRefEnd = count($imageInput);
+
+                $roleInstruction = "Image {$structureRefIndex} is the reference for composition and structure. Images {$styleRefStart} to {$styleRefEnd} are references for the artistic style.";
+                $finalPrompt = $roleInstruction . " " . $finalPrompt;
+            }
+        }
 
         try {
+            $json = [
+                'model' => self::MODEL_ID,
+                'prompt' => $finalPrompt,
+                'size' => $size,
+                'strength' => $strength,
+                'watermark' => false,
+                'response_format' => 'url',
+            ];
+
+            // 总是使用 image_urls (数组形式)
+            $json['image_urls'] = $imageInput;
+
             $response = $client->post(self::BASE_URL . '/api/v3/images/generations', [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Bearer ' . config('tos.ark_api_key'),
                 ],
-                'json' => [
-                    'model' => self::MODEL_ID,
-                    'prompt' => $prompt,
-                    'image' => $image,
-                    'size' => $size,
-                    'strength' => $strength,
-                    'watermark' => false,
-                    'response_format' => 'url',
-                ],
+                'json' => $json,
             ]);
 
             $body = $response->getBody()->getContents();

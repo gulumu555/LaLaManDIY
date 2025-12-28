@@ -11,8 +11,8 @@ use Workerman\Crontab\Crontab;
 
 class SelectImage
 {
-    // 新增版本标识属性
-    private static $version = '1.2.0';
+    // 版本号
+    private static $version = '1.3.0';
 
     public function onWorkerStart(): void
     {
