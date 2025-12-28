@@ -35,6 +35,7 @@
       <view class="style-item" bindtap="selectStyle" data-id="{{item.id}}">
         <view class="style-icon-container">
           <image class="style-icon" src="{{item.icon}}" mode="aspectFill"></image>
+          <view class="new-badge" wx:if="{{item.isNew}}">NEW</view>
         </view>
         <text class="style-name">{{item.name}}</text>
       </view>

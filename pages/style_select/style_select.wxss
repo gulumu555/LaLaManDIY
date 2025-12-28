@@ -139,13 +139,25 @@ page {
   vertical-align: top;
 }
 
-.style-icon-container {
   width: 160rpx;
   height: 160rpx;
   border-radius: 10rpx;
   overflow: hidden;
   background-color: #333333;
   margin-bottom: 10rpx;
+  position: relative;
+}
+
+.new-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #ff3b30;
+  color: white;
+  font-size: 16rpx;
+  padding: 2rpx 6rpx;
+  border-bottom-left-radius: 8rpx;
+  font-weight: bold;
 }
 
 .style-icon {

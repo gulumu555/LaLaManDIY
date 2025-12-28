@@ -24,12 +24,12 @@ const app = getApp();
 function request(options) {
   // 完整URL = 基础URL + 接口路径
   const url = app.globalData.apiBaseUrl + options.url;
-  
+
   // 设置请求头
   const header = {
     'content-type': 'application/json'
   };
-  
+
   // 如果需要认证，添加token到请求头
   if (options.needAuth) {
     const token = wx.getStorageSync('token');
@@ -40,7 +40,7 @@ function request(options) {
       return Promise.reject(new Error('未登录或登录已过期'));
     }
   }
-  
+
   // 返回Promise
   return new Promise((resolve, reject) => {
     wx.request({
@@ -58,14 +58,14 @@ function request(options) {
           wx.removeStorageSync('userInfo');
           app.globalData.hasLogin = false;
           app.globalData.userInfo = null;
-          
+
           // 提示用户重新登录
           wx.showToast({
             title: '登录已过期，请重新登录',
             icon: 'none',
             duration: 2000
           });
-          
+
           reject(new Error('登录已过期'));
         } else {
           // 其他错误
@@ -75,11 +75,11 @@ function request(options) {
       fail: (err) => {
         // 网络错误等
         console.error('网络请求失败:', err);
-        
+
         // 开发环境模拟数据（避免API未准备好时无法测试）
         if (app.globalData.apiBaseUrl.includes('127.0.0.1') || app.globalData.apiBaseUrl.includes('localhost')) {
           console.log('开发环境：返回模拟数据');
-          
+
           // 根据请求路径返回不同的模拟数据
           if (options.url.includes('/style/categories')) {
             // 模拟风格分类数据
@@ -102,14 +102,16 @@ function request(options) {
           } else if (options.url.includes('/style/category/')) {
             // 模拟特定分类下的风格列表
             const categoryId = options.url.split('/').pop(); // 获取分类 ID
-            
+
             // 根据分类 ID 返回不同的风格列表
             let styles = [];
-            
-            switch(categoryId) {
+
+            switch (categoryId) {
               case 'popular':
                 styles = [
-                  { id: 'ghibli', name: '吉博力风格', thumbnail: '/images/styles/style1_ghibli.png' },
+                  { id: 'ghibli_watercolor', name: '吉卜力水彩', thumbnail: '/images/styles/ghibli.png', isNew: true },
+                  { id: 'jimmy', name: '几米漫画', thumbnail: '/images/styles/jimmy.png', isNew: true },
+                  { id: 'ghibli', name: '吉卜力', thumbnail: '/images/styles/style1_ghibli.png' },
                   { id: 'miyazaki', name: '宫崎骏风格', thumbnail: '/images/styles/style2_miyazaki.png' },
                   { id: 'shinkai', name: '新海诚风格', thumbnail: '/images/styles/style3_shinkai.png' }
                 ];
@@ -149,7 +151,7 @@ function request(options) {
                   { id: 'default3', name: '默认风格3', thumbnail: '/images/styles/style3_shinkai.png' }
                 ];
             }
-            
+
             resolve(styles);
           } else if (options.url.includes('/style/process')) {
             // 模拟风格处理结果
@@ -231,7 +233,7 @@ function uploadImage(filePath, type) {
       },
       fail: (err) => {
         console.error('上传图片失败:', err);
-        
+
         // 开发环境模拟成功上传
         if (app.globalData.apiBaseUrl.includes('127.0.0.1') || app.globalData.apiBaseUrl.includes('localhost')) {
           console.log('开发环境：模拟图片上传成功');
