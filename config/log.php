@@ -224,4 +224,21 @@ return [
             ]
         ],
     ],
+    // LaLaMan 2.0 - 身份保持生成日志
+    'identity' => [
+        'handlers' => [
+            [
+                'class' => Monolog\Handler\RotatingFileHandler::class,
+                'constructor' => [
+                    runtime_path() . '/logs/identity/' . date('Y-m') . '/identity.log',
+                    0, //$maxFiles
+                    Monolog\Logger::DEBUG,
+                ],
+                'formatter' => [
+                    'class' => Monolog\Formatter\LineFormatter::class,
+                    'constructor' => [null, 'Y-m-d H:i:s', true],
+                ],
+            ]
+        ],
+    ],
 ];

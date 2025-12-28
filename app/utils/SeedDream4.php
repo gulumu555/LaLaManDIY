@@ -169,6 +169,103 @@ class SeedDream4
     }
 
     /**
+     * 使用身份保持生成风格化图像 (LaLaMan 2.0)
+     * 
+     * 该方法在应用艺术风格的同时保持用户面部特征的一致性。
+     * 
+     * @param string $identityImage 用户自拍/人脸图片 URL (用于保持身份)
+     * @param string $styleKey 风格 key (如 'ghibli', 'anime' 等)
+     * @param string $userPrompt 用户自定义提示词（可选）
+     * @param string $size 图像尺寸，默认 '2k'
+     * @param float $controlStrength 身份保持强度 (0.0-1.0)，默认 0.6
+     * @param float $refStrength 风格参考强度 (0.0-1.0)，默认 0.9
+     * @return array API 响应
+     */
+    public static function generateWithIdentity(
+        string $identityImage,
+        string $styleKey,
+        string $userPrompt = '',
+        string $size = '2k',
+        float $controlStrength = 0.6,
+        float $refStrength = 0.9
+    ): array {
+        // 验证风格是否有效
+        $styleConfig = SeedDreamStyles::getStyleByKey($styleKey);
+        if (!$styleConfig) {
+            abort("无效的风格: {$styleKey}");
+        }
+
+        $client = new Client();
+
+        // 构建提示词
+        $basePrompt = SeedDreamStyles::buildPrompt($styleKey, $userPrompt);
+
+        // 添加身份保持指令
+        $identityInstruction = "Maintain the facial features and identity of the person in Image 1. ";
+        $finalPrompt = $identityInstruction . $basePrompt;
+
+        // 构建图片输入数组
+        // Image 1: Identity Reference (用户自拍)
+        // Image 2+: Style Reference (风格参考图)
+        $imageInput = [$identityImage];
+
+        if (isset($styleConfig['reference_images']) && is_array($styleConfig['reference_images'])) {
+            $refImages = $styleConfig['reference_images'];
+            if (!empty($refImages)) {
+                $imageInput = array_merge($imageInput, $refImages);
+
+                $styleRefStart = 2;
+                $styleRefEnd = count($imageInput);
+                $roleInstruction = "Image 1 is the identity reference (keep face consistent). Images {$styleRefStart} to {$styleRefEnd} are style references. ";
+                $finalPrompt = $roleInstruction . $finalPrompt;
+            }
+        }
+
+        try {
+            $json = [
+                'model' => self::MODEL_ID,
+                'prompt' => $finalPrompt,
+                'image_urls' => $imageInput,
+                'size' => $size,
+                'control_strength' => $controlStrength,  // 身份保持强度
+                'ref_strength' => $refStrength,          // 风格参考强度
+                'watermark' => false,
+                'response_format' => 'url',
+            ];
+
+            Log::channel('identity')->info('Identity Generation Request', [
+                'style' => $styleKey,
+                'identity_image' => $identityImage,
+                'control_strength' => $controlStrength,
+                'ref_strength' => $refStrength,
+            ]);
+
+            $response = $client->post(self::BASE_URL . '/api/v3/images/generations', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . config('tos.ark_api_key'),
+                ],
+                'json' => $json,
+            ]);
+
+            $body = $response->getBody()->getContents();
+            $result = json_decode($body, true);
+
+            Log::channel('identity')->info('Identity Generation Response', [
+                'success' => isset($result['data'][0]['url']),
+            ]);
+
+            return $result;
+
+        } catch (\Exception $e) {
+            Log::channel('identity')->error('Identity Generation Failed', [
+                'error' => $e->getMessage(),
+            ]);
+            abort("身份保持生成失败: " . $e->getMessage());
+        }
+    }
+
+    /**
      * 获取所有可用风格列表
      * 
      * @return array 风格列表
