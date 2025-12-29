@@ -19,29 +19,29 @@ use app\process\Http;
 global $argv;
 
 return [
-    'webman'    => [
-        'handler'     => Http::class,
-        'listen'      => 'http://0.0.0.0:' . getenv('LISTEN_PORT'),
-        'count'       => cpu_count() * 4,
-        'user'        => '',
-        'group'       => '',
-        'reusePort'   => false,
-        'eventLoop'   => '',
-        'context'     => [],
+    'webman' => [
+        'handler' => Http::class,
+        'listen' => 'http://0.0.0.0:' . getenv('LISTEN_PORT'),
+        'count' => cpu_count() * 4,
+        'user' => '',
+        'group' => '',
+        'reusePort' => false,
+        'eventLoop' => '',
+        'context' => [],
         'constructor' => [
             'requestClass' => Request::class,
-            'logger'       => Log::channel('default'),
-            'appPath'      => app_path(),
-            'publicPath'   => public_path()
+            'logger' => Log::channel('default'),
+            'appPath' => app_path(),
+            'publicPath' => public_path()
         ]
     ],
     // File update detection and automatic reload
-    'monitor'   => [
-        'handler'     => app\process\Monitor::class,
-        'reloadable'  => false,
+    'monitor' => [
+        'handler' => app\process\Monitor::class,
+        'reloadable' => false,
         'constructor' => [
             // Monitor these directories
-            'monitorDir'        => array_merge([
+            'monitorDir' => array_merge([
                 app_path(),
                 config_path(),
                 base_path() . '/process',
@@ -53,10 +53,13 @@ return [
             ], glob(base_path() . '/plugin/*/app'), glob(base_path() . '/plugin/*/config'), glob(base_path() . '/plugin/*/api')),
             // Files with these suffixes will be monitored
             'monitorExtensions' => [
-                'php', 'html', 'htm', 'env'
+                'php',
+                'html',
+                'htm',
+                'env'
             ],
-            'options'           => [
-                'enable_file_monitor'   => ! in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
+            'options' => [
+                'enable_file_monitor' => !in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
                 'enable_memory_monitor' => DIRECTORY_SEPARATOR === '/',
             ]
         ]
@@ -87,6 +90,11 @@ return [
     ],
     'precisionEnhancement' => [
         'handler' => app\process\PrecisionEnhancement::class,
+        'count' => 1,
+    ],
+    // LaLaMan 2.0 - Batch Generation Worker
+    'batchWorker' => [
+        'handler' => app\process\BatchWorker::class,
         'count' => 1,
     ],
 ];
