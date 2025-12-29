@@ -1,0 +1,49 @@
+{
+	"pages": [{
+			"path": "pages/index/index"
+		}, {
+			"path": "pages/user/settings"
+		}, {
+			"path": "pages/user/index"
+		}, {
+			"path": "pages/user/photoOrder"
+		},
+		{
+			"path": "pages/print/index"
+		},
+		{
+			"path": "pages/print/orders"
+		},
+		{
+			"path": "pages/distributor/index"
+		},
+		{
+			"path": "pages/distributor/withdrawal"
+		},
+		{
+			"path": "pages/print/createSignature"
+		},
+		{
+			"path": "pages/styleTransfer/index"
+		},
+		{
+			"path": "pages/styleTransfer/preview"
+		},
+		{
+			"path": "pages/user/address"
+		},
+		{
+			"path": "pages/user/recharge"
+		},
+		{
+			"path": "pages/user/rechargeRecord"
+		},
+		{
+			"path": "pages/user/agreement"
+		}
+	],
+	"globalStyle": {
+		"navigationStyle": "custom"
+	},
+	"uniIdRouter": {}
+}

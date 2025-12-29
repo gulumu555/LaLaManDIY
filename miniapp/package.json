@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@volcengine/tos-sdk": "^2.7.4",
+    "dayjs": "^1.11.13",
+    "jsencrypt": "^3.3.2",
+    "lodash": "^4.17.21"
+  }
+}
