@@ -100,8 +100,8 @@ Page({
           styles: {
             anime: [
               { id: 'ghibli_watercolor', name: '吉卜力水彩', icon: '/images/styles/ghibli.png', isNew: true },
-              { id: 'ghibli', name: '吉卜力', icon: '/images/styles/ghibli.png' },
               { id: 'jimmy', name: '几米', icon: '/images/styles/jimmy.png', isNew: true },
+              { id: 'ghibli', name: '吉卜力', icon: '/images/styles/ghibli.png' },
               { id: 'miyazaki', name: '宫崎骏', icon: '/images/styles/miyazaki.png' },
               { id: 'shinkai', name: '新海诚', icon: '/images/styles/shinkai.png' },
               { id: 'pixar', name: '皮克斯', icon: '/images/styles/pixar.png' },
@@ -113,6 +113,7 @@ Page({
               { id: 'watercolor', name: '水彩', icon: '/images/styles/watercolor.png' }
             ],
             mixed: [
+              { id: 'art_toy', name: '手办 Art Toy', icon: '/images/styles/art_toy.png', isNew: true },
               { id: 'pikachu', name: '皮卡丘', icon: '/images/styles/pikachu.png' },
               { id: 'lovedeathrobots', name: '爱死机', icon: '/images/styles/lovedeathrobots.png' }
             ],
