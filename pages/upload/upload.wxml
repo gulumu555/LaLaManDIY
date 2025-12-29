@@ -44,6 +44,31 @@
     </block>
   </view>
   
+  <!-- LaLaMan 2.0 - Identity Mode Section -->
+  <view class="identity-section">
+    <view class="identity-toggle" bindtap="toggleIdentityMode">
+      <text class="identity-label">身份保持模式</text>
+      <view class="toggle-switch {{identityMode ? 'active' : ''}}">
+        <view class="toggle-knob"></view>
+      </view>
+    </view>
+    <text class="identity-tip" wx:if="{{identityMode}}">上传自拍照以保持面部特征</text>
+    
+    <!-- Selfie Upload Area (Only visible when identity mode is on) -->
+    <view class="selfie-upload" wx:if="{{identityMode}}" bindtap="chooseSelfie">
+      <block wx:if="{{selfieImagePath}}">
+        <image class="selfie-preview" src="{{selfieImagePath}}" mode="aspectFill"></image>
+        <text class="selfie-change">点击更换</text>
+      </block>
+      <block wx:else>
+        <view class="selfie-placeholder">
+          <text class="selfie-icon">👤</text>
+          <text class="selfie-text">上传自拍</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  
   <!-- 加载指示器 -->
   <view class="loading-mask" wx:if="{{isLoading}}">
     <view class="loading-spinner"></view>
