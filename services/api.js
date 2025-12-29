@@ -523,6 +523,45 @@ function getUserEffects(page = 1, limit = 10) {
   });
 }
 
+/**
+ * LaLaMan 2.0 - 使用身份保持生成风格化图像
+ * @param {string} identityImage - 用户自拍/身份图片URL
+ * @param {string} styleKey - 风格key
+ * @param {Object} options - 可选参数
+ * @param {string} options.prompt - 自定义提示词
+ * @param {number} options.controlStrength - 身份保持强度 (0.0-1.0)
+ * @param {number} options.refStrength - 风格参考强度 (0.0-1.0)
+ * @returns {Promise} 生成结果
+ */
+function generateWithIdentity(identityImage, styleKey, options = {}) {
+  return request({
+    url: '/api/Identity/generate',
+    method: 'POST',
+    data: {
+      identity_image: identityImage,
+      style_key: styleKey,
+      prompt: options.prompt || '',
+      control_strength: options.controlStrength || 0.6,
+      ref_strength: options.refStrength || 0.9
+    },
+    needAuth: false
+  }).then(result => {
+    // 转换响应格式以匹配前端期望
+    if (result.code === 0) {
+      return {
+        success: true,
+        data: result.data,
+        msg: result.msg
+      };
+    } else {
+      return {
+        success: false,
+        msg: result.msg || '身份保持生成失败'
+      };
+    }
+  });
+}
+
 // 导出所有API函数
 module.exports = {
   uploadImage,
@@ -543,6 +582,7 @@ module.exports = {
   saveStyleResult,
   getUserEffects,
   getUserStyles,
+  generateWithIdentity, // LaLaMan 2.0
   login,
   logout
 };

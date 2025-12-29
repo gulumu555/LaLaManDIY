@@ -24,7 +24,10 @@ Page({
     isLoading: false, // 加载状态
     loadingText: '处理中...', // 加载提示文字
     isGif: false, // 是否为GIF处理
-    effectType: '' // GIF效果类型
+    effectType: '', // GIF效果类型
+    // LaLaMan 2.0 - Identity Mode
+    identityMode: false, // 是否启用身份保持模式
+    selfiePath: '' // 自拍/身份图片路径
   },
 
   /**
@@ -45,13 +48,19 @@ Page({
             'styleInfo.id': options.styleId,
             'styleInfo.name': options.styleName
           };
-          
+
           // 检查是否为GIF处理
           if (options.isGif === 'true' && options.effectType) {
             data.isGif = true;
             data.effectType = options.effectType;
           }
-          
+
+          // LaLaMan 2.0 - Identity Mode
+          if (options.identityMode === 'true' && options.selfiePath) {
+            data.identityMode = true;
+            data.selfiePath = decodeURIComponent(options.selfiePath);
+          }
+
           this.setData(data);
         },
         fail: (error) => {
@@ -105,12 +114,12 @@ Page({
       });
       return;
     }
-    
+
     this.setData({
       isLoading: true,
       loadingText: '正在处理图片...'
     });
-    
+
     // 根据选择的选项卡调用不同的处理方法
     if (this.data.currentTab === 'resolution') {
       // 分辨率提升
@@ -127,14 +136,14 @@ Page({
   enhanceResolution: function () {
     const imagePath = this.data.photoInfo.path;
     const resolutionOption = this.data.selectedResolution;
-    
+
     // 优先使用后端API
     apiService.enhanceResolution(imagePath, resolutionOption)
       .then(result => {
         this.setData({
           isLoading: false
         });
-        
+
         if (result.success) {
           // 处理成功，跳转到预览页面
           wx.navigateTo({
@@ -159,21 +168,27 @@ Page({
     const imagePath = this.data.photoInfo.path;
     const styleId = this.data.styleInfo.id;
     const styleName = this.data.styleInfo.name;
-    
+
     // 检查是否为GIF处理
     if (this.data.isGif) {
       // 使用GIF处理函数
       this.createGifAnimation();
       return;
     }
-    
+
+    // LaLaMan 2.0 - Identity Mode: 使用身份保持API
+    if (this.data.identityMode && this.data.selfiePath) {
+      this.convertWithIdentity();
+      return;
+    }
+
     // 优先使用后端API
     apiService.convertImage(imagePath, styleId)
       .then(result => {
         this.setData({
           isLoading: false
         });
-        
+
         if (result.success) {
           // 处理成功，跳转到预览页面
           wx.navigateTo({
@@ -190,17 +205,62 @@ Page({
         return this.useLocalProcessing('style', imagePath, styleName.toLowerCase());
       });
   },
-  
+
+  /**
+   * LaLaMan 2.0 - 使用身份保持模式转换风格
+   */
+  convertWithIdentity: function () {
+    const imagePath = this.data.photoInfo.path;
+    const styleId = this.data.styleInfo.id;
+    const styleName = this.data.styleInfo.name;
+    const selfiePath = this.data.selfiePath;
+
+    this.setData({
+      loadingText: '正在使用身份保持模式生成...'
+    });
+
+    // 调用Identity API
+    apiService.generateWithIdentity(selfiePath, styleId)
+      .then(result => {
+        this.setData({
+          isLoading: false
+        });
+
+        if (result.success && result.data.image_url) {
+          // 处理成功，跳转到预览页面
+          wx.navigateTo({
+            url: `/pages/preview/preview?imagePath=${encodeURIComponent(result.data.image_url)}&originalPath=${imagePath}&processType=identity&styleId=${styleId}&styleName=${styleName}`
+          });
+        } else {
+          // 处理失败
+          wx.showToast({
+            title: result.msg || '身份保持生成失败',
+            icon: 'none'
+          });
+        }
+      })
+      .catch(error => {
+        console.error('身份保持API出错', error);
+        this.setData({
+          isLoading: false
+        });
+        wx.showToast({
+          title: '身份保持生成失败',
+          icon: 'none'
+        });
+      });
+  },
+
   /**
    * 使用本地处理服务作为备选
    */
-  useLocalProcessing: function(type, imagePath, option) {
+  useLocalProcessing: function (type, imagePath, option) {
     wx.showToast({
       title: '正在使用本地服务处理...',
       icon: 'none',
       duration: 2000
     });
-    
+
     if (type === 'resolution') {
       // 使用本地服务提升分辨率
       imageProcessingService.enhanceImage(imagePath, 'resolution', { scale: option })
@@ -208,7 +268,7 @@ Page({
           this.setData({
             isLoading: false
           });
-          
+
           if (result.success) {
             // 处理成功，跳转到预览页面
             wx.navigateTo({
@@ -226,7 +286,7 @@ Page({
           this.setData({
             isLoading: false
           });
-          
+
           console.error('本地分辨率提升出错', error);
           wx.showToast({
             title: '分辨率提升出错',
@@ -236,7 +296,7 @@ Page({
     } else if (type === 'style') {
       // 将风格名称映射到本地服务支持的风格类型
       let styleType = 'cartoon'; // 默认卡通风格
-      
+
       // 简单映射逻辑，可根据实际需求扩展
       if (option.includes('水墨') || option.includes('ink')) {
         styleType = 'ink';
@@ -245,14 +305,14 @@ Page({
       } else if (option.includes('铅笔') || option.includes('pencil')) {
         styleType = 'pencil';
       }
-      
+
       // 使用本地服务转换风格
       imageProcessingService.convertImageStyle(imagePath, styleType)
         .then(result => {
           this.setData({
             isLoading: false
           });
-          
+
           if (result.success) {
             // 处理成功，跳转到预览页面
             wx.navigateTo({
@@ -270,7 +330,7 @@ Page({
           this.setData({
             isLoading: false
           });
-          
+
           console.error('本地风格转换出错', error);
           wx.showToast({
             title: '风格转换出错',
@@ -287,18 +347,18 @@ Page({
     const imagePath = this.data.photoInfo.path;
     const effectType = this.data.effectType;
     const styleName = this.data.styleInfo.name;
-    
+
     this.setData({
       loadingText: '正在生成GIF动画...'
     });
-    
+
     // 优先使用后端API
     apiService.createGif(imagePath, effectType)
       .then(result => {
         this.setData({
           isLoading: false
         });
-        
+
         if (result.success) {
           // 处理成功，跳转到预览页面
           wx.navigateTo({
@@ -315,7 +375,7 @@ Page({
         this.createLocalGif();
       });
   },
-  
+
   /**
    * 使用本地服务创建GIF动画
    */
@@ -323,14 +383,14 @@ Page({
     const imagePath = this.data.photoInfo.path;
     const effectType = this.data.effectType;
     const styleName = this.data.styleInfo.name;
-    
+
     // 使用本地图像处理服务创建简单GIF
     imageProcessingService.createSimpleGif(imagePath, effectType)
       .then(result => {
         this.setData({
           isLoading: false
         });
-        
+
         // 跳转到预览页面
         wx.navigateTo({
           url: `/pages/preview/preview?imagePath=${result.tempFilePath}&originalPath=${imagePath}&processType=gif&effectType=${effectType}&styleName=${styleName}`
@@ -341,7 +401,7 @@ Page({
         this.setData({
           isLoading: false
         });
-        
+
         wx.showToast({
           title: 'GIF创建失败，请重试',
           icon: 'none'
