@@ -3,6 +3,8 @@
     "pages/index/index",
     "pages/upload/upload",
     "pages/user/user",
+    "pages/story_create/story_create",
+    "pages/story_result/story_result",
     "pages/print_type/print_type",
     "pages/sticker_service/sticker_service",
     "pages/sticker_upload/sticker_upload",

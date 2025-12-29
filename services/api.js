@@ -562,6 +562,118 @@ function generateWithIdentity(identityImage, styleKey, options = {}) {
   });
 }
 
+// ========== LaLaMan 2.0 Story Card APIs ==========
+
+/**
+ * 获取故事模板列表（首页用）
+ * @returns {Promise}
+ */
+function getStoryTemplates() {
+  return request({
+    url: '/api/StoryCard/templates',
+    method: 'GET'
+  }).then(result => {
+    if (result.code === 1 && result.data) {
+      return { success: true, data: result.data };
+    }
+    return { success: false, data: [] };
+  }).catch(() => {
+    // 返回默认模板
+    return {
+      success: true,
+      data: [
+        { id: 1, title: '成都之旅', location: 'CHENGDU · TAIKOO LI', time: '2025.12.29', caption: '这一格，是我们在成都留下的。', imageUrl: '/images/templates/chengdu.jpg' },
+        { id: 2, title: '日常记录', location: 'SOMEWHERE', time: 'TODAY', caption: '有些日子，值得被记住。', imageUrl: '/images/templates/daily.jpg' }
+      ]
+    };
+  });
+}
+
+/**
+ * 生成一格故事图
+ * @param {Object} params
+ * @param {string} params.styleKey - 风格标识
+ * @param {string} params.intent - 表达意图
+ * @param {string} params.identityImage - 用户照片URL（可选）
+ * @param {string} params.location - 位置文本
+ * @param {number} params.latitude - 纬度
+ * @param {number} params.longitude - 经度
+ * @returns {Promise}
+ */
+function generateStoryCard(params) {
+  return request({
+    url: '/api/StoryCard/generate',
+    method: 'POST',
+    data: params,
+    needAuth: false
+  }).then(result => {
+    if (result.code === 1 && result.data) {
+      return {
+        success: true,
+        data: {
+          id: result.data.id,
+          imageUrl: result.data.image_url || result.data.imageUrl
+        }
+      };
+    }
+    return { success: false, message: result.msg || '生成失败' };
+  });
+}
+
+/**
+ * 生成/刷新一句话文案
+ * @param {Object} params
+ * @param {string} params.city - 城市
+ * @param {string} params.time - 时间
+ * @param {string} params.relation - 关系 (self/couple/family)
+ * @param {string} params.emotion - 情绪 (happy/sad/memory/calm)
+ * @returns {Promise}
+ */
+function generateCaption(params) {
+  return request({
+    url: '/api/StoryCard/caption',
+    method: 'POST',
+    data: params,
+    needAuth: false
+  }).then(result => {
+    if (result.code === 1 && result.data) {
+      return {
+        success: true,
+        data: { caption: result.data.caption }
+      };
+    }
+    return { success: false };
+  }).catch(() => {
+    return { success: false };
+  });
+}
+
+/**
+ * 获取风格列表
+ * @returns {Promise}
+ */
+function getStyles() {
+  return request({
+    url: '/api/SeedDream/styles',
+    method: 'GET'
+  }).then(result => {
+    if (result.code === 1 && result.data) {
+      return { success: true, data: result.data };
+    }
+    return { success: false, data: [] };
+  }).catch(() => {
+    return { success: false, data: [] };
+  });
+}
+
+/**
+ * 获取API基础URL
+ * @returns {string}
+ */
+function getBaseUrl() {
+  return app.globalData.apiBaseUrl;
+}
+
 // 导出所有API函数
 module.exports = {
   uploadImage,
@@ -583,6 +695,12 @@ module.exports = {
   getUserEffects,
   getUserStyles,
   generateWithIdentity, // LaLaMan 2.0
+  // LaLaMan 2.0 Story Card
+  getStoryTemplates,
+  generateStoryCard,
+  generateCaption,
+  getStyles,
+  getBaseUrl,
   login,
   logout
 };

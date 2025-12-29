@@ -1,24 +1,33 @@
-<!-- index.wxml - 首页 (VOUN风格) -->
+<!-- index.wxml - 首页 (LaLaMan 2.0 故事模板流) -->
 <view class="container">
-  <!-- 瀑布流不同画风样例展示区 -->
+  <!-- 故事模板封面流 -->
   <scroll-view scroll-y="true" class="gallery-scroll" bindscroll="onPageScroll" show-scrollbar="{{false}}">
     <view class="gallery-container">
-      <!-- 使用wx:for循环渲染单行大图 VOUN风格 -->
+      <!-- 使用wx:for循环渲染故事模板卡片 -->
       <block wx:for="{{artStyles}}" wx:key="id">
-        <view class="gallery-item {{index === activeIndex ? 'active' : ''}}">
+        <view 
+          class="gallery-item {{index === activeIndex ? 'active' : ''}}"
+          bindtap="onCardTap"
+          data-template="{{item}}"
+        >
           <view class="style-card">
-            <!-- 画风样例大图 -->
+            <!-- 主画面 -->
             <image 
               class="gallery-image {{item.id}}" 
               src="{{item.image}}" 
-              mode="widthFix"
+              mode="aspectFill"
               lazy-load="true"
             ></image>
             
-            <!-- 画风名称标签 -->
-            <view class="style-info">
-              <view class="style-name">{{item.name}}</view>
+            <!-- 故事信息覆盖层 -->
+            <view class="story-overlay">
+              <view class="story-location">📍 {{item.location || 'SOMEWHERE'}}</view>
+              <view class="story-time">{{item.time || '2025'}}</view>
+              <view class="story-caption">{{item.caption || item.name}}</view>
             </view>
+            
+            <!-- 点击提示 -->
+            <view class="tap-hint">用这个模板创作 →</view>
           </view>
         </view>
       </block>

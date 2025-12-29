@@ -1,0 +1,134 @@
+<!-- story_create.wxml - 创作入口页 -->
+<view class="container">
+  <!-- 步骤指示器 -->
+  <view class="step-indicator">
+    <view class="step {{currentStep >= 1 ? 'active' : ''}}">1</view>
+    <view class="step-line {{currentStep >= 2 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 2 ? 'active' : ''}}">2</view>
+    <view class="step-line {{currentStep >= 3 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 3 ? 'active' : ''}}">3</view>
+  </view>
+
+  <!-- Step 1: 选择表达意图 -->
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+    <view class="section-title">我想表达什么？</view>
+    <view class="intent-list">
+      <view 
+        class="intent-card {{selectedIntent === item.key ? 'selected' : ''}}"
+        wx:for="{{intents}}"
+        wx:key="key"
+        bindtap="selectIntent"
+        data-key="{{item.key}}"
+        data-panels="{{item.panels}}"
+      >
+        <view class="intent-icon">{{item.icon}}</view>
+        <view class="intent-info">
+          <view class="intent-title">{{item.title}}</view>
+          <view class="intent-desc">{{item.desc}}</view>
+        </view>
+        <view class="intent-badge" wx:if="{{item.recommended}}">推荐</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 2: 选择风格 + 格数布局 -->
+  <view class="step-content" wx:if="{{currentStep === 2}}">
+    <view class="section-title">选择风格</view>
+    <scroll-view scroll-x class="style-scroll">
+      <view class="style-list">
+        <view 
+          class="style-card {{selectedStyle === item.key ? 'selected' : ''}}"
+          wx:for="{{styles}}"
+          wx:key="key"
+          bindtap="selectStyle"
+          data-key="{{item.key}}"
+        >
+          <image class="style-image" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="style-name">{{item.name}}</view>
+          <view class="style-check" wx:if="{{selectedStyle === item.key}}">✓</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 格数布局选择 -->
+    <view class="panel-section">
+      <view class="section-subtitle">选择格数</view>
+      <view class="panel-tip">💡 适合发朋友圈</view>
+      <view class="panel-list">
+        <view 
+          class="panel-card {{selectedPanels === item.count ? 'selected' : ''}}"
+          wx:for="{{panelLayouts}}"
+          wx:key="count"
+          bindtap="selectPanels"
+          data-count="{{item.count}}"
+        >
+          <view class="panel-icon">{{item.icon}}</view>
+          <view class="panel-name">{{item.name}}</view>
+          <view class="panel-badge" wx:if="{{item.recommended}}">推荐</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 可选：上传照片 -->
+    <view class="photo-section">
+      <view class="section-subtitle">上传照片（可选）</view>
+      <view class="photo-tip">💡 让主角更像你</view>
+      <view class="photo-upload" bindtap="choosePhoto">
+        <image wx:if="{{photoPath}}" class="photo-preview" src="{{photoPath}}" mode="aspectFill"></image>
+        <view wx:else class="photo-placeholder">
+          <view class="photo-icon">📷</view>
+          <view class="photo-text">点击上传</view>
+        </view>
+        <view class="photo-remove" wx:if="{{photoPath}}" catchtap="removePhoto">×</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 3: 确认生成 -->
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+    <view class="section-title">确认信息</view>
+    <view class="confirm-card">
+      <view class="confirm-row">
+        <text class="confirm-label">表达意图</text>
+        <text class="confirm-value">{{selectedIntentText}}</text>
+      </view>
+      <view class="confirm-row">
+        <text class="confirm-label">风格</text>
+        <text class="confirm-value">{{selectedStyleText}}</text>
+      </view>
+      <view class="confirm-row">
+        <text class="confirm-label">格数</text>
+        <text class="confirm-value">{{selectedPanels}}格</text>
+      </view>
+      <view class="confirm-row">
+        <text class="confirm-label">照片</text>
+        <text class="confirm-value">{{photoPath ? '已上传' : '使用默认角色'}}</text>
+      </view>
+      <view class="confirm-row" wx:if="{{locationName}}">
+        <text class="confirm-label">位置</text>
+        <text class="confirm-value">📍 {{locationName}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮区 -->
+  <view class="bottom-actions">
+    <view class="btn-secondary" wx:if="{{currentStep > 1}}" bindtap="prevStep">上一步</view>
+    <view class="btn-primary" bindtap="nextStep" wx:if="{{currentStep < 3}}">
+      下一步
+    </view>
+    <view class="btn-primary generate" bindtap="startGenerate" wx:if="{{currentStep === 3}}">
+      <text wx:if="{{!isGenerating}}">✨ 生成 {{selectedPanels}} 格故事图</text>
+      <text wx:else>生成中...</text>
+    </view>
+  </view>
+</view>
+
+<!-- 生成中遮罩 -->
+<view class="loading-mask" wx:if="{{isGenerating}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">正在生成你的 {{selectedPanels}} 格故事图...</view>
+    <view class="loading-tip">大约需要 {{selectedPanels * 5}}-{{selectedPanels * 10}} 秒</view>
+  </view>
+</view>
