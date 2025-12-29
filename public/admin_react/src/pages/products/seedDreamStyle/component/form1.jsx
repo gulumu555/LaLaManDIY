@@ -57,6 +57,46 @@ export default ({ typeAction, initialValues = {}, ...props }) => {
                 rules={[{ required: true, message: '请选择分类' }]}
             />
 
+            {/* 模型选择 */}
+            <ProFormSelect
+                name="model"
+                label="AI模型"
+                initialValue="seedream_4_5"
+                tooltip="选择用于生成图片的AI模型"
+                options={[
+                    { label: 'Seedream 4.5 (推荐)', value: 'seedream_4_5' },
+                    { label: 'Seedream 4.0', value: 'seedream_4_0' },
+                    { label: 'Seedream 3.0 (旧版)', value: 'seedream_3_0' },
+                    { label: 'FLUX 1.1', value: 'flux_1_1' },
+                    { label: 'Stable Diffusion XL', value: 'sdxl' },
+                ]}
+                rules={[{ required: true, message: '请选择模型' }]}
+            />
+
+            {/* 生成参数 */}
+            <Space size="large">
+                <ProFormDigit
+                    name="style_strength"
+                    label="风格强度"
+                    initialValue={0.7}
+                    min={0.1}
+                    max={1.0}
+                    step={0.1}
+                    tooltip="参考图影响程度 (0.1-1.0)"
+                    width="sm"
+                />
+                <ProFormDigit
+                    name="identity_strength"
+                    label="身份保持强度"
+                    initialValue={0.8}
+                    min={0.1}
+                    max={1.0}
+                    step={0.1}
+                    tooltip="照片相似度 (0.1-1.0)"
+                    width="sm"
+                />
+            </Space>
+
             <ProFormTextArea
                 name="prompt"
                 label="风格提示词"
