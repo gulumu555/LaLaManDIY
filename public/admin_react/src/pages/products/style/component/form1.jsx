@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { categoryApi } from '@/api/category';
+import { modelConfigApi } from '@/api/modelConfig';
 import { ProForm, ProFormText, ProFormTextArea, ProFormDigit, ProFormSelect, ProFormSwitch, ProFormSlider } from '@ant-design/pro-components';
 import { Row, Col, Divider, Typography } from 'antd';
 import { arrayToTree } from '@/common/function';
@@ -85,26 +86,11 @@ export default ({ typeAction, ...props }) => {
                     label="AI模型"
                     placeholder="请选择模型"
                     tooltip="选择用于生成图片的AI模型"
-                    request={async () => {
-                        try {
-                            // 动态从后台获取模型列表
-                            const { modelConfigApi } = await import('@/api/modelConfig');
-                            const res = await modelConfigApi.getActiveList();
-                            if (res.code === 1 && res.data) {
-                                return res.data.map(item => ({
-                                    label: item.is_default ? `${item.name} (默认)` : item.name,
-                                    value: item.key
-                                }));
-                            }
-                        } catch (e) {
-                            console.warn('获取模型列表失败，使用默认选项');
-                        }
-                        // 备用选项
-                        return [
-                            { label: 'Seedream 4.5 (默认)', value: 'seedream_4_5' },
-                            { label: 'Seedream 4.0', value: 'seedream_4_0' },
-                        ];
-                    }}
+                    initialValue="seedream_4_5"
+                    options={[
+                        { label: 'Seedream 4.5 (默认)', value: 'seedream_4_5' },
+                        { label: 'Seedream 4.0', value: 'seedream_4_0' },
+                    ]}
                     rules={[
                         { required: true, message: '请选择模型' },
                     ]}

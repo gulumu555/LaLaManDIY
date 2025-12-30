@@ -1,0 +1,1 @@
+import{h as t}from"./index-CxoETvRH.js";const a={getList:(e={})=>t.get("/admin/AdminMenu/getList",e),create:(e={})=>t.post("/admin/AdminMenu/create",e),findData:(e={})=>t.get("/admin/AdminMenu/findData",e),update:(e={})=>t.post("/admin/AdminMenu/update",e),delete:(e={})=>t.post("/admin/AdminMenu/delete",e)};export{a};

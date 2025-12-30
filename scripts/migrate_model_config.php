@@ -5,24 +5,30 @@
  * 使用方法: php scripts/migrate_model_config.php
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../support/bootstrap.php';
-
-use support\Db;
+// 读取数据库配置
+$dbHost = getenv('DB_HOST') ?: 'mysql';
+$dbName = getenv('DB_DATABASE') ?: 'db_lalaman';
+$dbUser = getenv('DB_USERNAME') ?: 'root';
+$dbPass = getenv('DB_PASSWORD') ?: 'XbC13v)R';
 
 echo "=== AI模型配置表迁移 ===\n";
 echo "时间: " . date('Y-m-d H:i:s') . "\n\n";
 
 try {
-    // 检查表是否存在
-    $tableExists = Db::select("SHOW TABLES LIKE 'app_model_config'");
+    // 连接数据库
+    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "✓ 数据库连接成功\n\n";
 
-    if (!empty($tableExists)) {
+    // 检查表是否存在
+    $tableExists = $pdo->query("SHOW TABLES LIKE 'app_model_config'")->fetch();
+
+    if ($tableExists) {
         echo "⏭ app_model_config 表已存在，跳过创建\n";
     } else {
         echo "创建 app_model_config 表...\n";
 
-        Db::statement("
+        $pdo->exec("
             CREATE TABLE app_model_config (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 `key` VARCHAR(50) NOT NULL UNIQUE COMMENT '模型标识',
@@ -48,55 +54,40 @@ try {
         // 插入默认数据
         echo "插入默认模型配置...\n";
 
-        Db::table('app_model_config')->insert([
-            [
-                'key' => 'seedream_4_5',
-                'name' => 'Seedream 4.5',
-                'version' => '4.5',
-                'provider' => 'volcengine',
-                'description' => '火山引擎 Seedream 4.5，当前主力模型，效果最佳',
-                'params' => json_encode([
-                    'model' => 'seedream-4.5',
-                    'max_images' => 4,
-                    'supports_identity' => true
-                ]),
-                'is_active' => 1,
-                'is_default' => 1,
-                'sort' => 100
-            ],
-            [
-                'key' => 'seedream_4_0',
-                'name' => 'Seedream 4.0',
-                'version' => '4.0',
-                'provider' => 'volcengine',
-                'description' => '火山引擎 Seedream 4.0，备用模型',
-                'params' => json_encode([
-                    'model' => 'seedream-4.0',
-                    'max_images' => 4,
-                    'supports_identity' => true
-                ]),
-                'is_active' => 1,
-                'is_default' => 0,
-                'sort' => 90
-            ],
-            [
-                'key' => 'flux_1_1',
-                'name' => 'FLUX 1.1',
-                'version' => '1.1',
-                'provider' => 'other',
-                'description' => 'FLUX模型（预留）',
-                'params' => json_encode([
-                    'model' => 'flux-1.1',
-                    'max_images' => 1,
-                    'supports_identity' => false
-                ]),
-                'is_active' => 0,
-                'is_default' => 0,
-                'sort' => 50
-            ]
-        ]);
+        $stmt = $pdo->prepare("
+            INSERT INTO app_model_config (`key`, name, version, provider, description, params, is_active, is_default, sort)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
 
-        echo "✓ 默认数据插入成功\n";
+        // Seedream 4.5 (默认)
+        $stmt->execute([
+            'seedream_4_5',
+            'Seedream 4.5',
+            '4.5',
+            'volcengine',
+            '火山引擎 Seedream 4.5，当前主力模型，效果最佳',
+            json_encode(['model' => 'seedream-4.5', 'max_images' => 4, 'supports_identity' => true]),
+            1,
+            1,
+            100
+        ]);
+        echo "  ✓ Seedream 4.5 (默认)\n";
+
+        // Seedream 4.0
+        $stmt->execute([
+            'seedream_4_0',
+            'Seedream 4.0',
+            '4.0',
+            'volcengine',
+            '火山引擎 Seedream 4.0，备用模型',
+            json_encode(['model' => 'seedream-4.0', 'max_images' => 4, 'supports_identity' => true]),
+            1,
+            0,
+            90
+        ]);
+        echo "  ✓ Seedream 4.0\n";
+
+        echo "\n✓ 默认数据插入成功\n";
     }
 
     echo "\n=== 迁移完成 ===\n";

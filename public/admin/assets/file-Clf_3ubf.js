@@ -1,0 +1,1 @@
+import{c as i,h as a}from"./index-CxoETvRH.js";const t={upload:(e={})=>a.upload("/admin/File/upload",e),uploadUrl:`${i.url}/admin/File/upload`,download:`${i.url}/admin/File/download`,getSignature:(e={})=>a.get("/admin/File/getSignature",e),getQcloudSignature:(e={})=>a.get("/admin/File/getQcloudSignature",e)};export{t as f};

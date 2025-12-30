@@ -1,0 +1,1 @@
+import"./index-CxoETvRH.js";function h(f,e,t){const l={...f};return e.top+f.y<=t.top?l.y=t.top-e.top:e.bottom+f.y>=t.top+t.height&&(l.y=t.top+t.height-e.bottom),e.left+f.x<=t.left?l.x=t.left-e.left:e.right+f.x>=t.left+t.width&&(l.x=t.left+t.width-e.right),l}const i=f=>{let{containerNodeRect:e,draggingNodeRect:t,transform:l}=f;return!t||!e?l:h(l,t,e)};export{i as r};

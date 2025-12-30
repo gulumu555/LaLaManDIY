@@ -13,7 +13,7 @@ use support\Response;
 class ModelConfig
 {
     protected $onLogin = true;
-    protected $noNeedLogin = [];
+    protected $noNeedLogin = ['getActiveList'];  // 允许表单下拉框获取模型列表
 
     /**
      * 获取模型列表

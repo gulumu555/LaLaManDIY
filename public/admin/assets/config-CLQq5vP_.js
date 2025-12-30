@@ -1,0 +1,1 @@
+const l=[{value:0,label:"待支付"},{value:1,label:"已支付"},{value:2,label:"已取消"}],a=[{value:1,label:"待发货"},{value:2,label:"已发货"},{value:3,label:"确认收货"}],e=[{value:1,label:"微信支付"},{value:2,label:"佣金抵扣"},{value:3,label:"混合支付"}],t=[{value:1,label:"待商家审核"},{value:2,label:"退款成功"},{value:3,label:"申请拒绝"}];export{e as a,a as l,l as p,t as r};
