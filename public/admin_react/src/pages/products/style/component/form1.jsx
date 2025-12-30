@@ -84,15 +84,27 @@ export default ({ typeAction, ...props }) => {
                     name="model"
                     label="AI模型"
                     placeholder="请选择模型"
-                    initialValue="seedream_4_5"
                     tooltip="选择用于生成图片的AI模型"
-                    options={[
-                        { label: 'Seedream 4.5 (推荐)', value: 'seedream_4_5' },
-                        { label: 'Seedream 4.0', value: 'seedream_4_0' },
-                        { label: 'Seedream 3.0', value: 'seedream_3_0' },
-                        { label: 'FLUX 1.1', value: 'flux_1_1' },
-                        { label: 'Stable Diffusion XL', value: 'sdxl' },
-                    ]}
+                    request={async () => {
+                        try {
+                            // 动态从后台获取模型列表
+                            const { modelConfigApi } = await import('@/api/modelConfig');
+                            const res = await modelConfigApi.getActiveList();
+                            if (res.code === 1 && res.data) {
+                                return res.data.map(item => ({
+                                    label: item.is_default ? `${item.name} (默认)` : item.name,
+                                    value: item.key
+                                }));
+                            }
+                        } catch (e) {
+                            console.warn('获取模型列表失败，使用默认选项');
+                        }
+                        // 备用选项
+                        return [
+                            { label: 'Seedream 4.5 (默认)', value: 'seedream_4_5' },
+                            { label: 'Seedream 4.0', value: 'seedream_4_0' },
+                        ];
+                    }}
                     rules={[
                         { required: true, message: '请选择模型' },
                     ]}
