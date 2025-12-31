@@ -1,0 +1,1 @@
+import{h as r}from"./index-ZI51y314.js";const d={getList:(t={})=>r.get("/admin/WithdrawOrder/getList",t),findData:(t={})=>r.get("/admin/WithdrawOrder/findData",t),updateStatus:(t={})=>r.post("/admin/WithdrawOrder/updateStatus",t)};export{d as w};

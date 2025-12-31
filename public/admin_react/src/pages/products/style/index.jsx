@@ -3,8 +3,10 @@ import { PageContainer } from '@ant-design/pro-components';
 import { photoStyleApi } from '@/api/photoStyle';
 import { categoryApi } from '@/api/category';
 import { ProTable } from '@ant-design/pro-components';
-import { App, Button, Popconfirm, Typography, Space, Tooltip,
-Image, Switch, } from 'antd';
+import {
+    App, Button, Popconfirm, Typography, Space, Tooltip,
+    Image, Switch,
+} from 'antd';
 import {
     OrderedListOutlined,
     QuestionCircleOutlined,
@@ -16,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { config } from '@/common/config';
 import { NavLink } from 'react-router-dom';
-import { authCheck, arrayToTree} from '@/common/function';
+import { authCheck, arrayToTree } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
 const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).href;
@@ -39,10 +41,10 @@ export default () => {
     const tableReload = () => {
         setLoading(true); // 开始加载
         try {
-          tableRef.current.reload();
-          tableRef.current.clearSelected();
+            tableRef.current.reload();
+            tableRef.current.clearSelected();
         } finally {
-          setLoading(false); // 结束加载
+            setLoading(false); // 结束加载
         }
     }
 
@@ -96,9 +98,9 @@ export default () => {
             minWidth: 100,
             align: 'center',
             search: true,
-            valueType : 'select',
+            valueType: 'select',
             request: async () => {
-                const result = await categoryApi.getList({pageSize: 1000, type: 2});
+                const result = await categoryApi.getList({ pageSize: 1000, type: 2 });
                 let list = result.data.data.map(item => {
                     return {
                         label: item.cate_name,
@@ -172,7 +174,7 @@ export default () => {
                     onClick={() => {
                         updateStatus(record.id, record.status == 1 ? 0 : 1);
                     }}
-                    // disabled={authCheck('photoStyleUpdateStatus')}
+                // disabled={authCheck('photoStyleUpdateStatus')}
                 />
             </>
         },
@@ -198,7 +200,7 @@ export default () => {
                         }}
                         disabled={authCheck('photoStyleDelete')}
                     >
-                       {/* <Button
+                        {/* <Button
                             type="link"
                             size="small"
                             danger
@@ -226,7 +228,7 @@ export default () => {
                     title: '二级风格',
                     style: { padding: '0px 24px 12px' },
                 }}
-                            >
+            >
                 <ProTable
                     actionRef={tableRef}
                     formRef={formRef}
@@ -245,10 +247,10 @@ export default () => {
                     }}
                     headerTitle={
                         <Space>
-                            {/*<Lazyload block={false}>*/}
-                            {/*    <Create tableReload={tableReload} />*/}
-                            {/*</Lazyload>*/}
-                                                            </Space>
+                            <Lazyload block={false}>
+                                <Create tableReload={tableReload} />
+                            </Lazyload>
+                        </Space>
                     }
                     pagination={{
                         defaultPageSize: 20,
@@ -267,7 +269,7 @@ export default () => {
                         try {
                             const result = await photoStyleApi.getList({
                                 ...params,// 包含了翻页参数跟搜索参数
-                                                                orderBy, // 排序
+                                orderBy, // 排序
                                 page: params.current,
                             });
                             return {
@@ -276,14 +278,14 @@ export default () => {
                                 total: result.data.total,
                             };
                         } catch (err) {
-                          message.error('获取列表失败');
-                          return {
-                            data: [],
-                            success: false,
-                            total: 0,
-                          };
+                            message.error('获取列表失败');
+                            return {
+                                data: [],
+                                success: false,
+                                total: 0,
+                            };
                         } finally {
-                          setLoading(false);
+                            setLoading(false);
                         }
                     }}
                     loading={loading}

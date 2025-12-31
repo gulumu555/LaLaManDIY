@@ -1,0 +1,1 @@
+import{d4 as i,d5 as a}from"./index-ZI51y314.js";const e="contentTabs",n={activeName:"",keepAlive:[],list:[{close:!1,keepAlive:[],path:"/index",title:"首页",name:"index"}]},d=i({key:e,default:n,effects_UNSTABLE:[({setSelf:s,onSet:o})=>{let t=a.get(e);t&&s(t),o(l=>{a.set(e,l)})}]});export{d as c};

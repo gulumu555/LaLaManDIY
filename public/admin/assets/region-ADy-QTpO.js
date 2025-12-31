@@ -1,1 +1,0 @@
-import{h as e}from"./index-CxoETvRH.js";const r={getList:(t={})=>e.get("/admin/region/getList",t),getProvince:(t={})=>e.get("/admin/region/getProvince",t),getProvinceCity:(t={})=>e.get("/admin/region/getProvinceCity",t),getListAll:(t={})=>e.get("/admin/region/getListAll",t)};export{r};

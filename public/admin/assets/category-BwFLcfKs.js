@@ -1,0 +1,1 @@
+import{h as a}from"./index-ZI51y314.js";const r={getList:(t={})=>a.get("/admin/Category/getList",t),findData:(t={})=>a.get("/admin/Category/findData",t),update:(t={})=>a.post("/admin/Category/update",t),updateStatus:(t={})=>a.post("/admin/Category/updateStatus",t)};export{r as c};
