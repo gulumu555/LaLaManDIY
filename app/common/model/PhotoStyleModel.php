@@ -56,7 +56,16 @@ class PhotoStyleModel extends BaseModel
     {
         if (empty($value))
             return [];
-        $images = is_array($value) ? $value : json_decode($value, true);
+
+        // Handle already decoded values (object or array)
+        if (is_object($value)) {
+            $images = (array) $value;
+        } elseif (is_array($value)) {
+            $images = $value;
+        } else {
+            $images = json_decode($value, true);
+        }
+
         return array_map(function ($img) {
             return ImgUrlTool::addPrefix($img);
         }, $images ?: []);

@@ -174,6 +174,25 @@
             max-height: 200px;
             border-radius: 8px;
         }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.1);
+        }
     </style>
 </head>
 
@@ -182,13 +201,24 @@
         <h1>🎨 Seedream 4.5 风格转绘测试</h1>
 
         <div class="section">
-            <h3>1️⃣ 输入你的照片 URL</h3>
-            <input type="text" id="imageUrl" placeholder="粘贴图片 URL，例如：https://xxx.com/photo.jpg">
-            <div class="preview" id="preview"></div>
+            <h3>1️⃣ 上传你的照片</h3>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" accept="image/*" style="display: none"
+                    onchange="handleFileSelect(event)">
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📷</div>
+                    <p>点击选择照片或拖拽到此处</p>
+                    <p style="font-size: 12px; color: #888; margin-top: 8px;">支持 JPG / PNG 格式</p>
+                </div>
+                <div class="preview" id="preview" style="display: none;">
+                    <img id="previewImg" src="" alt="预览">
+                </div>
+            </div>
+            <input type="hidden" id="imageUrl">
         </div>
 
         <div class="section">
-            <h3>2️⃣ 选择风格（24种可选）</h3>
+            <h3>2️⃣ 选择风格（22种可选）</h3>
             <div class="styles-grid" id="stylesGrid"></div>
         </div>
 
@@ -205,21 +235,33 @@
 
     <script>
         const styles = [
-            // 动画/插画风格 (6)
-            { key: 'ghibli', name: '吉卜力' },
-            { key: 'ghibli_watercolor', name: '吉卜力水彩' },
-            { key: 'shinkai', name: '新海诚' },
-            { key: 'pixar', name: '皮克斯' },
-            { key: 'disney', name: '迪士尼' },
-            { key: 'jimmy', name: '几米' },
-            // 经典艺术风格 (7)
-            { key: 'oil_painting', name: '油画' },
-            { key: 'watercolor', name: '水彩画' },
-            { key: 'sketch', name: '素描' },
-            { key: 'pixel_art', name: '像素艺术' },
-            { key: 'impressionist', name: '印象派' },
-            { key: 'chinese_ink', name: '国风水墨' },
-            { key: 'pop_art', name: '波普艺术' },
+            // 游戏 (3)
+            { key: 'wow', name: '魔兽世界', category: '游戏' },
+            { key: 'genshin', name: '原神', category: '游戏' },
+            { key: 'zelda', name: '塞尔达传说', category: '游戏' },
+            // 动漫 (7)
+            { key: 'ghibli', name: '吉卜力', category: '动漫' },
+            { key: 'shinkai', name: '新海诚', category: '动漫' },
+            { key: 'ghibli_watercolor', name: '吉卜力水彩', category: '动漫' },
+            { key: 'disney', name: '迪士尼', category: '动漫' },
+            { key: 'pixar', name: '皮克斯', category: '动漫' },
+            { key: 'moebius', name: '莫比斯', category: '动漫' },
+            { key: 'cel', name: '赛璐璐', category: '动漫' },
+            // 插画 (2)
+            { key: 'jimmy', name: '几米', category: '插画' },
+            { key: 'cloud9', name: '第九朵云', category: '插画' },
+            // 艺术 (7)
+            { key: 'oil_painting', name: '油画', category: '艺术' },
+            { key: 'impressionist', name: '印象派', category: '艺术' },
+            { key: 'watercolor', name: '水彩', category: '艺术' },
+            { key: 'sketch', name: '素描', category: '艺术' },
+            { key: 'chinese', name: '国风', category: '艺术' },
+            { key: 'pop_art', name: '波谱', category: '艺术' },
+            { key: 'pixel', name: '像素', category: '艺术' },
+            // 3D (3)
+            { key: 'figurine', name: '桌面手办', category: '3D' },
+            { key: 'plush', name: '毛绒玩偶', category: '3D' },
+            { key: 'clay', name: '粘土玩偶', category: '3D' },
         ];
 
         let selectedStyle = null;
@@ -240,21 +282,51 @@
             selectedStyle = key;
         }
 
-        // 预览图片
-        document.getElementById('imageUrl').addEventListener('input', function () {
-            const url = this.value.trim();
-            const preview = document.getElementById('preview');
-            if (url) {
-                preview.innerHTML = `<img src="${url}" onerror="this.style.display='none'" alt="预览">`;
-            } else {
-                preview.innerHTML = '';
+        // 文件上传处理
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processFile(file);
             }
+        }
+
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const base64 = e.target.result;
+                document.getElementById('imageUrl').value = base64;
+                document.getElementById('previewImg').src = base64;
+                document.getElementById('preview').style.display = 'block';
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
         });
 
         async function generate() {
             const imageUrl = document.getElementById('imageUrl').value.trim();
             if (!imageUrl) {
-                alert('请输入图片 URL');
+                alert('请先上传一张照片');
                 return;
             }
             if (!selectedStyle) {

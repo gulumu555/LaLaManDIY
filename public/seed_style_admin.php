@@ -142,27 +142,63 @@ header('Content-Type: text/html; charset=utf-8');
                     <th>Key</th>
                     <th>名称</th>
                     <th>分类</th>
-                    <th>参考图</th>
-                    <th>状态</th>
+                    <th>模型</th>
+                    <th>风格强度</th>
+                    <th>身份强度</th>
+                    <th>操作</th>
                 </tr>
                 <?php foreach ($styles as $style): ?>
                     <tr>
-                        <td><?php echo $style['id']; ?></td>
-                        <td><code><?php echo htmlspecialchars($style['key']); ?></code></td>
-                        <td><?php echo htmlspecialchars($style['name']); ?></td>
-                        <td><?php echo htmlspecialchars($style['category'] ?? 'general'); ?></td>
-                        <td>
-                            <?php
-                            $refCount = is_array($style['reference_images']) ? count($style['reference_images']) : 0;
-                            echo $refCount . ' 张';
-                            ?>
-                        </td>
-                        <td>
-                            <span class="tag tag-active">启用</span>
-                            <?php if (!empty($style['is_new'])): ?>
-                                <span class="tag tag-new">新品</span>
-                            <?php endif; ?>
-                        </td>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="id" value="<?php echo $style['id']; ?>">
+                            <td><?php echo $style['id']; ?></td>
+                            <td><?php echo htmlspecialchars($style['key']); ?></td>
+                            <td><?php echo htmlspecialchars($style['name']); ?></td>
+                            <td>
+                                <select name="category" style="width: 80px;">
+                                    <?php
+                                    $cats = ['anime' => '动漫', 'painting' => '绘画', 'mixed' => '混合', 'general' => '通用'];
+                                    foreach ($cats as $k => $v) {
+                                        $sel = ($style['category'] ?? 'anime') == $k ? 'selected' : '';
+                                        echo "<option value='$k' $sel>$v</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="model" style="width: 120px;">
+                                    <?php
+                                    $models = ['seedream_4_5' => 'Seedream 4.5', 'seedream_4_0' => 'Seedream 4.0', 'flux_1_1' => 'FLUX 1.1'];
+                                    foreach ($models as $k => $v) {
+                                        $sel = ($style['model'] ?? 'seedream_4_5') == $k ? 'selected' : '';
+                                        echo "<option value='$k' $sel>$v</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" min="0" max="1" name="style_strength"
+                                    value="<?php echo $style['style_strength'] ?? 0.7; ?>" style="width: 60px;">
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" min="0" max="1" name="identity_strength"
+                                    value="<?php echo $style['identity_strength'] ?? 0.8; ?>" style="width: 60px;">
+                            </td>
+                            <td>
+                                <details>
+                                    <summary>参考图 URL (每行一个)</summary>
+                                    <textarea name="reference_images" style="width: 100%; height: 100px;"><?php
+                                        if (!empty($style['reference_images']) && is_array($style['reference_images'])) {
+                                            echo implode("\n", $style['reference_images']);
+                                        }
+                                    ?></textarea>
+                                </details>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn">💾 保存</button>
+                            </td>
+                        </form>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -191,10 +227,34 @@ header('Content-Type: text/html; charset=utf-8');
                         'is_new' => 1,
                         'sort' => 100,
                     ]);
-                    echo '<p class="success">✅ 测试风格添加成功！<a href="" style="color:#4ecca3">刷新页面</a>查看</p>';
+                    echo '<p class="success">✅ 测试风格添加成功！<a href="" style="color:#4ecca3">刷新页面</a></p>';
                 } catch (Exception $e) {
                     echo '<p class="error">❌ 添加失败: ' . htmlspecialchars($e->getMessage()) . '</p>';
                 }
+            } elseif ($action === 'update') {
+               try {
+                    $refImages = [];
+                    if (!empty($_POST['reference_images'])) {
+                        $lines = explode("\n", $_POST['reference_images']);
+                        foreach($lines as $line) {
+                            $line = trim($line);
+                            if ($line) $refImages[] = $line;
+                        }
+                    }
+
+                    $updateData = [
+                        'id' => $_POST['id'],
+                        'style_strength' => $_POST['style_strength'],
+                        'identity_strength' => $_POST['identity_strength'],
+                        'model' => $_POST['model'],
+                        'category' => $_POST['category'],
+                        'reference_images' => $refImages
+                    ];
+                    SeedDreamStyleLogic::update($updateData);
+                    echo '<p class="success">✅ 风格 ID '.$_POST['id'].' 更新成功！<a href="" style="color:#4ecca3">刷新查看</a></p>';
+               } catch (Exception $e) {
+                    echo '<p class="error">❌ 更新失败: ' . htmlspecialchars($e->getMessage()) . '</p>';
+               }
             }
         }
         ?>

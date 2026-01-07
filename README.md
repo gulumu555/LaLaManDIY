@@ -94,25 +94,34 @@ LaLaMan 2.0 的核心理念是让普通人也能方便地用AIGC来表达情绪�
 
 ---
 
-### 📦 v1.3 - 风格扩展版 (2025年12月)
+### 📦 v1.3 - 风格扩展版 (2026年1月)
+
+**核心功能更新：**
+- ✅ **身份保持功能** - 使用 Seedream 4.5 单图编辑模式，保持人脸特征
+- ✅ **风格分类系统** - 一级分类（5类）+ 二级风格（22种）
+- ✅ **风格类型选择** - 知名风格（纯提示词）vs 定制风格（需参考图）
+- ✅ **多图输出** - 生成4张图供用户选择
 
 **新增风格：**
 | 风格名称 | Key | 类型 |
 |----------|-----|------|
-| 🆕 吉卜力水彩 | `ghibli_watercolor` | 动漫 |
-| 🆕 几米 | `jimmy` | 动漫 |
-| 🆕 手办 Art Toy | `art_toy` | 混合 |
+| 🆕 吉卜力水彩 | `ghibli_watercolor` | 知名风格 |
+| 🆕 新海诚 | `shinkai` | 知名风格 |
+| 🆕 迪士尼 | `disney` | 知名风格 |
+| 🆕 第九朵云 | `cloud_nine` | 定制风格 |
 
 **技术更新：**
-- 集成 Seedream 4.5 API（字节跳动）
-- 支持动态风格管理（数据库配置）
-- MiniApp (UniApp/Vue版本) 代码归档
+- 集成 Seedream 4.5 API（字节跳动火山引擎）
+- 后台风格管理（分类、模型选择、参考图、强度参数）
+- React Admin 风格类型选项（知名/定制）
+- 数据库新增字段：`style_type`, `reference_images`, `style_strength`, `identity_strength`
 
 **目录结构变更：**
 ```
 lalaman-master/
-├── miniapp/          # 🆕 UniApp/Vue版本前端
+├── miniapp/          # UniApp/Vue版本前端
 ├── pages/            # 原生微信小程序前端
+├── public/admin_react/  # React Admin后台
 └── app/              # PHP后端
 ```
 

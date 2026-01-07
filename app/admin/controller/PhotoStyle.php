@@ -17,7 +17,7 @@ class PhotoStyle
 
     // 此控制器是否需要登录
     protected $onLogin = true;
-    
+
     // 不需要登录的方法
     protected $noNeedLogin = [];
 
@@ -49,7 +49,7 @@ class PhotoStyle
     /**
      * 获取数据
      * @method get
-	 * @param Request $request 
+     * @param Request $request 
      * @param int $id 
      * @return Response
      */
@@ -67,6 +67,9 @@ class PhotoStyle
      */
     public function update(Request $request): Response
     {
+        // Debug logging
+        error_log("PhotoStyle::update CALLED. Params: " . json_encode($request->post(), JSON_UNESCAPED_UNICODE));
+
         PhotoStyleLogic::update($request->post());
         return success([], '修改成功');
     }

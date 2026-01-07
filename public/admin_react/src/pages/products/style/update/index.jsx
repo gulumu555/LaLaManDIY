@@ -55,17 +55,34 @@ export default ({ tableReload, updateId, setUpdateId, ...props }) => {
             request={async (params) => {
                 const result = await photoStyleApi.findData(params);
                 if (result.code === 1) {
-                    return result.data;
+                    const data = result.data;
+                    // 确保 reference_images 是数组格式供 UploadImgMultiple 使用
+                    if (data.reference_images && typeof data.reference_images === 'string') {
+                        try {
+                            data.reference_images = JSON.parse(data.reference_images);
+                        } catch (e) {
+                            data.reference_images = [];
+                        }
+                    }
+                    if (!Array.isArray(data.reference_images)) {
+                        data.reference_images = [];
+                    }
+                    console.log('Loaded reference_images:', data.reference_images);
+                    return data;
                 } else {
                     message.error(result.message);
                     setOpen(false);
                 }
             }}
             onFinish={async (values) => {
-                const result = await photoStyleApi.update({
-                    id: updateId,
-                    ...values
-                });
+                // 确保 reference_images 是数组格式
+                const submitData = { ...values, id: updateId };
+                if (submitData.reference_images && !Array.isArray(submitData.reference_images)) {
+                    submitData.reference_images = [];
+                }
+                console.log('Submitting reference_images:', submitData.reference_images);
+
+                const result = await photoStyleApi.update(submitData);
                 if (result.code === 1) {
                     tableReload?.();
                     message.success(result.message)

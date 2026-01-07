@@ -17,10 +17,10 @@ class SeedDreamStyleModel extends Model
     protected $autoWriteTimestamp = true;
 
     // 创建时间字段
-    protected $createTime = 'create_time';
+    protected $createTime = 'created_at';
 
     // 更新时间字段
-    protected $updateTime = 'update_time';
+    protected $updateTime = 'updated_at';
 
     // JSON字段自动转换
     protected $json = ['reference_images', 'params'];

@@ -1,0 +1,1 @@
+import{h as e}from"./index-BTXTJVKt.js";const d={getList:(t={})=>e.get("/admin/Product/getList",t),create:(t={})=>e.post("/admin/Product/create",t),findData:(t={})=>e.get("/admin/Product/findData",t),update:(t={})=>e.post("/admin/Product/update",t),delete:(t={})=>e.post("/admin/Product/delete",t),updateStatus:(t={})=>e.post("/admin/Product/updateStatus",t)};export{d as p};

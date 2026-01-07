@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedream 4.5 本地测试</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #4ecca3;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card h2 {
+            color: #4ecca3;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a2e;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .style-item {
+            padding: 12px;
+            background: #1a1a2e;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .style-item:hover {
+            border-color: #4ecca3;
+        }
+
+        .style-item.selected {
+            border-color: #4ecca3;
+            background: rgba(78, 204, 163, 0.2);
+        }
+
+        .style-item .name {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .style-item .key {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ecca3, #38a89d);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(78, 204, 163, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 8px;
+        }
+
+        .result img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #4ecca3;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+
+        .error {
+            color: #ff6b6b;
+            padding: 16px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 8px;
+        }
+
+        .success {
+            color: #4ecca3;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .col {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .api-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .api-info code {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎨 Seedream 4.5 本地测试</h1>
+        <p class="subtitle">测试版本 1.3 的身份保持风格生成功能</p>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <h2>1️⃣ 选择风格</h2>
+                    <div id="styleGrid" class="style-grid">
+                        <div class="loading">加载风格列表中</div>
+                    </div>
+                    <input type="hidden" id="selectedStyle" value="">
+                </div>
+
+                <div class="card">
+                    <h2>2️⃣ 输入参数</h2>
+                    <div class="form-group">
+                        <label>用户照片 URL *</label>
+                        <input type="text" id="imageUrl" placeholder="https://example.com/photo.jpg"
+                            value="https://ark-auto-2107415805-cn-beijing-default.tos-cn-beijing.volces.com/upload/20250703/pexels-mostafasanadd-868113.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>自定义提示词（可选）</label>
+                        <input type="text" id="prompt" placeholder="例如：A portrait in the forest">
+                    </div>
+                    <div class="form-group">
+                        <label>身份保持强度: <span id="controlVal">0.7</span></label>
+                        <input type="range" id="controlStrength" min="0.1" max="1" step="0.1" value="0.7"
+                            oninput="document.getElementById('controlVal').textContent=this.value">
+                    </div>
+                    <div class="form-group">
+                        <label>风格强度: <span id="refVal">0.8</span></label>
+                        <input type="range" id="refStrength" min="0.1" max="1" step="0.1" value="0.8"
+                            oninput="document.getElementById('refVal').textContent=this.value">
+                    </div>
+                    <button id="generateBtn" class="btn btn-primary" onclick="generate()">🚀 开始生成</button>
+                    <p class="api-info">API: <code>POST /api/Test/seedDreamWithStyle</code></p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <h2>3️⃣ 生成结果</h2>
+                    <div id="result" class="result">
+                        <p style="color:#666">选择风格并点击"开始生成"按钮</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8111';
+        let styles = [];
+
+        // 加载风格列表
+        async function loadStyles() {
+            try {
+                const res = await fetch(`${API_BASE}/api/Test/seedDreamStyles`);
+                const data = await res.json();
+                if ((data.code === 0 || data.code === 1) && data.data) {
+                    styles = data.data;
+                    renderStyles();
+                } else {
+                    document.getElementById('styleGrid').innerHTML = `<div class="error">加载失败: ${data.message || '未知错误'}</div>`;
+                }
+            } catch (e) {
+                document.getElementById('styleGrid').innerHTML = `<div class="error">请求失败: ${e.message}</div>`;
+            }
+        }
+
+        function renderStyles() {
+            const grid = document.getElementById('styleGrid');
+            if (styles.length === 0) {
+                grid.innerHTML = '<div class="error">没有可用的风格</div>';
+                return;
+            }
+            grid.innerHTML = styles.map(s => `
+                <div class="style-item" data-key="${s.key || s.id}" onclick="selectStyle(this, '${s.key || s.id}')">
+                    <div class="name">${s.name || s.style_name}</div>
+                    <div class="key">${s.key || 'ID:' + s.id}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectStyle(el, key) {
+            document.querySelectorAll('.style-item').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('selectedStyle').value = key;
+        }
+
+        async function generate() {
+            const style = document.getElementById('selectedStyle').value;
+            const image = document.getElementById('imageUrl').value;
+            const prompt = document.getElementById('prompt').value;
+            const controlStrength = document.getElementById('controlStrength').value;
+            const refStrength = document.getElementById('refStrength').value;
+
+            if (!style) { alert('请先选择一个风格'); return; }
+            if (!image) { alert('请输入用户照片 URL'); return; }
+
+            const resultDiv = document.getElementById('result');
+            const btn = document.getElementById('generateBtn');
+
+            resultDiv.innerHTML = '<div class="loading">正在生成图片，请稍候（约 20-60 秒）</div>';
+            btn.disabled = true;
+            btn.textContent = '⏳ 生成中...';
+
+            try {
+                const res = await fetch(`${API_BASE}/api/Test/seedDreamWithStyle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image: image,
+                        style: style,
+                        prompt: prompt,
+                        control_strength: parseFloat(controlStrength),
+                        ref_strength: parseFloat(refStrength)
+                    })
+                });
+
+                const data = await res.json();
+
+                if ((data.code === 0 || data.code === 1) && data.data) {
+                    // API returns nested structure: {code, data: {model, created, data: [{url}]}}
+                    let imgUrl = '';
+                    const d = data.data;
+
+                    // Handle nested data.data.data[0].url
+                    if (d.data && Array.isArray(d.data) && d.data[0] && d.data[0].url) {
+                        imgUrl = d.data[0].url;
+                    }
+                    // Handle data.data[0].url
+                    else if (Array.isArray(d) && d[0] && d[0].url) {
+                        imgUrl = d[0].url;
+                    }
+                    // Handle data.data.url
+                    else if (d.url) {
+                        imgUrl = d.url;
+                    }
+                    // Handle string
+                    else if (typeof d === 'string') {
+                        imgUrl = d;
+                    }
+                    // Fallback: show debug info
+                    else {
+                        imgUrl = '';
+                        console.log('Unable to extract URL from:', d);
+                    }
+
+                    if (imgUrl) {
+                        resultDiv.innerHTML = `
+                            <p class="success">✅ 生成成功！</p>
+                            <img src="${imgUrl}" alt="Generated Image" style="max-width:100%">
+                            <p style="margin-top:10px;font-size:12px;color:#666;word-break:break-all;">${imgUrl}</p>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <p class="success">✅ 生成成功！</p>
+                            <p style="color:#ff6b6b">无法提取图片URL，原始响应：</p>
+                            <pre style="font-size:11px;overflow:auto;max-height:200px">${JSON.stringify(data.data, null, 2)}</pre>
+                        `;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ 生成失败: ${data.message || JSON.stringify(data)}</div>`;
+                }
+            } catch (e) {
+                resultDiv.innerHTML = `<div class="error">❌ 请求异常: ${e.message}</div>`;
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🚀 开始生成';
+        }
+
+        // 初始化
+        loadStyles();
+    </script>
+</body>
+
+</html>

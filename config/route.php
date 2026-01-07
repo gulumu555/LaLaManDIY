@@ -14,8 +14,15 @@
 
 use Webman\Route;
 
+// Admin SPA fallback - serve index.html for /admin and /admin/
+Route::get('/admin', function () {
+    return response(file_get_contents(public_path() . '/admin/index.html'))
+        ->header('Content-Type', 'text/html');
+});
 
-
-
+Route::get('/admin/', function () {
+    return response(file_get_contents(public_path() . '/admin/index.html'))
+        ->header('Content-Type', 'text/html');
+});
 
 

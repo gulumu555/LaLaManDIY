@@ -1,0 +1,1 @@
+import{v as e,j as t,B as a}from"./index-BTXTJVKt.js";import{R as i}from"./index-ZV6Sdybn.js";const o=()=>{const s=e();return t.jsx(i,{status:"404",title:"404",subTitle:"页面不见了~",extra:t.jsx(a,{type:"primary",onClick:()=>{s("/index")},children:"返回首页"})})};export{o as default};

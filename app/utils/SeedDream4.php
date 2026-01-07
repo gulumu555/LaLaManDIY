@@ -186,8 +186,7 @@ class SeedDream4
         string $styleKey,
         string $userPrompt = '',
         string $size = '2k',
-        float $controlStrength = 0.6,
-        float $refStrength = 0.9
+        int $numImages = 4  // 生成多张图供用户选择
     ): array {
         // 验证风格是否有效
         $styleConfig = SeedDreamStyles::getStyleByKey($styleKey);
@@ -197,47 +196,57 @@ class SeedDream4
 
         $client = new Client();
 
-        // 构建提示词
-        $basePrompt = SeedDreamStyles::buildPrompt($styleKey, $userPrompt);
+        // 获取风格配置
+        $styleName = $styleConfig['name'] ?? $styleKey;
+        $stylePrompt = $styleConfig['prompt'] ?? '';
+        $styleType = $styleConfig['style_type'] ?? 1; // 1=知名风格, 2=定制风格
+        $refImages = $styleConfig['reference_images'] ?? [];
 
-        // 添加身份保持指令
-        $identityInstruction = "Maintain the facial features and identity of the person in Image 1. ";
-        $finalPrompt = $identityInstruction . $basePrompt;
+        // 构建编辑提示词 - 保持人脸不变，只改变艺术风格
+        $finalPrompt = "Transform this photo into {$styleName} art style. ";
+        $finalPrompt .= "CRITICAL: Keep the person's face, facial features, gender, age, and identity exactly the same. ";
+        $finalPrompt .= "Only change the artistic style and rendering, do not change the person. ";
 
-        // 构建图片输入数组
-        // Image 1: Identity Reference (用户自拍)
-        // Image 2+: Style Reference (风格参考图)
-        $imageInput = [$identityImage];
-
-        if (isset($styleConfig['reference_images']) && is_array($styleConfig['reference_images'])) {
-            $refImages = $styleConfig['reference_images'];
-            if (!empty($refImages)) {
-                $imageInput = array_merge($imageInput, $refImages);
-
-                $styleRefStart = 2;
-                $styleRefEnd = count($imageInput);
-                $roleInstruction = "Image 1 is the identity reference (keep face consistent). Images {$styleRefStart} to {$styleRefEnd} are style references. ";
-                $finalPrompt = $roleInstruction . $finalPrompt;
-            }
+        if (!empty($stylePrompt)) {
+            $finalPrompt .= $stylePrompt . " ";
         }
+
+        if (!empty($userPrompt)) {
+            $finalPrompt .= $userPrompt . " ";
+        }
+
+        $finalPrompt .= "The subject must remain recognizable as the same person in the original photo.";
 
         try {
             $json = [
                 'model' => self::MODEL_ID,
                 'prompt' => $finalPrompt,
-                'image_urls' => $imageInput,
                 'size' => $size,
-                'control_strength' => $controlStrength,  // 身份保持强度
-                'ref_strength' => $refStrength,          // 风格参考强度
                 'watermark' => false,
                 'response_format' => 'url',
+                'n' => $numImages,  // 生成多张图
             ];
+
+            // 根据风格类型选择调用方式
+            if ($styleType == 2 && !empty($refImages)) {
+                // 定制风格：使用 image_urls 传入用户图片 + 参考图
+                $imageInput = array_merge([$identityImage], $refImages);
+                $json['image_urls'] = $imageInput;
+
+                // 补充提示词说明图片角色
+                $json['prompt'] = "image_1 is the person whose face must be preserved. " .
+                    "images 2-" . count($imageInput) . " are style references. " .
+                    $finalPrompt;
+            } else {
+                // 知名风格：使用 image 单图编辑模式（更好地保持身份）
+                $json['image'] = $identityImage;
+            }
 
             Log::channel('identity')->info('Identity Generation Request', [
                 'style' => $styleKey,
+                'style_type' => $styleType,
+                'num_images' => $numImages,
                 'identity_image' => $identityImage,
-                'control_strength' => $controlStrength,
-                'ref_strength' => $refStrength,
             ]);
 
             $response = $client->post(self::BASE_URL . '/api/v3/images/generations', [

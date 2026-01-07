@@ -1,1 +1,0 @@
-import{h as e}from"./index-ZI51y314.js";const a={getList:(t={})=>e.get("/admin/ServiceProduct/getList",t),create:(t={})=>e.post("/admin/ServiceProduct/create",t),findData:(t={})=>e.get("/admin/ServiceProduct/findData",t),update:(t={})=>e.post("/admin/ServiceProduct/update",t),updateStatus:(t={})=>e.post("/admin/ServiceProduct/updateStatus",t)};export{a as s};

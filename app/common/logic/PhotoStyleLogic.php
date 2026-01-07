@@ -20,20 +20,20 @@ class PhotoStyleLogic
      * @param array $params get参数
      * @param bool $page 是否需要翻页
      * */
-      public static function getList(array $params = [])
-       {
-           // 排序
-           $orderBy = "sort desc,id desc";
+    public static function getList(array $params = [])
+    {
+        // 排序
+        $orderBy = "sort desc,id desc";
         if (isset($params['orderBy']) && $params['orderBy']) {
-               $orderBy = "{$params['orderBy']},{$orderBy}";
-           }
+            $orderBy = "{$params['orderBy']},{$orderBy}";
+        }
 
-           $list = PhotoStyleModel::withSearch(['cate_id', 'status','style_name'], $params)
-               //->with([])
-               ->order($orderBy);
+        $list = PhotoStyleModel::withSearch(['cate_id', 'status', 'style_name'], $params)
+            //->with([])
+            ->order($orderBy);
 
-           return $list->paginate($params['pageSize'] ?? 20);
-       }
+        return $list->paginate($params['pageSize'] ?? 20);
+    }
 
     /**
      * 新增
@@ -71,9 +71,31 @@ class PhotoStyleLogic
     {
         Db::startTrans();
         try {
-            validate(PhotoStyleValidate::class)->check($params);
+            if (empty($params['id'])) {
+                throw new \Exception('缺少 id 参数');
+            }
 
-            PhotoStyleModel::update($params);
+            $id = $params['id'];
+
+            // 处理 reference_images 字段
+            if (isset($params['reference_images'])) {
+                if (is_string($params['reference_images'])) {
+                    $params['reference_images'] = json_decode($params['reference_images'], true) ?: [];
+                }
+            }
+
+            $model = PhotoStyleModel::find($id);
+            if (!$model) {
+                throw new \Exception("找不到 id={$id} 的记录");
+            }
+
+            unset($params['id']);
+
+            foreach ($params as $key => $value) {
+                $model->$key = $value;
+            }
+
+            $model->save();
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();

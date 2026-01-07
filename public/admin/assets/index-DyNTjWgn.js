@@ -1,0 +1,1 @@
+import{j as t,c as e}from"./index-BTXTJVKt.js";import{L as o}from"./index-BL3fPB8N.js";import"./Sider-clMwekzu.js";import"./LeftOutlined-CNJksXTb.js";const{Footer:r}=o,p=()=>t.jsx(t.Fragment,{children:t.jsxs(r,{style:{textAlign:"center",background:"none",padding:"12px"},children:["Copyright © ",new Date().getFullYear()," ",e.company," ",e.icp]})});export{p as default};

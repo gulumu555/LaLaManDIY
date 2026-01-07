@@ -77,7 +77,11 @@ class SeedDreamStyleLogic
     {
         Db::startTrans();
         try {
-            validate(SeedDreamStyleValidate::class)->check($params);
+            if (empty($params['id'])) {
+                throw new \Exception('缺少 id 参数');
+            }
+
+            $id = $params['id'];
 
             // 处理JSON字段
             if (isset($params['reference_images']) && is_string($params['reference_images'])) {
@@ -87,11 +91,18 @@ class SeedDreamStyleLogic
                 $params['params'] = json_decode($params['params'], true);
             }
 
-            SeedDreamStyleModel::update($params);
+            $model = SeedDreamStyleModel::find($id);
+            if (!$model) {
+                throw new \Exception("找不到 id={$id} 的记录");
+            }
 
-            // 清除缓存
+            unset($params['id']);
+            foreach ($params as $key => $value) {
+                $model->$key = $value;
+            }
+            $model->save();
+
             self::clearCache();
-
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();

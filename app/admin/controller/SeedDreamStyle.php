@@ -63,6 +63,9 @@ class SeedDreamStyle
      */
     public function update(Request $request): Response
     {
+        // Debug logging to Docker stdout
+        error_log("SeedDreamStyle::update CALLED. Params: " . json_encode($request->post(), JSON_UNESCAPED_UNICODE));
+
         SeedDreamStyleLogic::update($request->post());
         return success([], '修改成功');
     }

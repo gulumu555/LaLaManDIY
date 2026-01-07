@@ -349,13 +349,15 @@ class Test
     }
 
     /**
-     * 测试 Seedream 风格图像生成
+     * 测试 Seedream 风格图像生成（带身份保持）
      * POST /api/Test/seedDreamWithStyle
      * 参数:
-     *   - image: 参考图片 URL
-     *   - style: 风格 key (如 'anime', 'cyberpunk', 'oil_painting' 等)
+     *   - image: 用户照片 URL 或 base64
+     *   - style: 风格 key (如 'ghibli', 'shinkai', 'oil_painting' 等)
      *   - prompt: 可选，用户自定义提示词
      *   - size: 可选，图像尺寸，默认 '2k'
+     *   - control_strength: 可选，身份保持强度 (0.1-1.0)，默认 0.7
+     *   - ref_strength: 可选，风格参考强度 (0.1-1.0)，默认 0.8
      */
     public function seedDreamWithStyle(Request $request): Response
     {
@@ -363,12 +365,22 @@ class Test
         $style = $request->post('style');
         $prompt = $request->post('prompt', '');
         $size = $request->post('size', '2k');
+        $controlStrength = floatval($request->post('control_strength', 0.7));
+        $refStrength = floatval($request->post('ref_strength', 0.8));
 
         if (!$image || !$style) {
             abort('参数错误: image 和 style 是必填项');
         }
 
-        $response = SeedDream4::generateWithStyle($image, $style, $prompt, $size);
+        // 使用 generateWithIdentity 方法来保持人物身份
+        $response = SeedDream4::generateWithIdentity(
+            $image,
+            $style,
+            $prompt,
+            $size,
+            $controlStrength,
+            $refStrength
+        );
 
         return success($response);
     }

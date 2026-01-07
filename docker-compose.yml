@@ -16,6 +16,8 @@ services:
     environment:
       - DB_HOST=mysql
       - REDIS_HOST=redis
+      - TOS_ARK_API_KEY=13103e03-7506-4b6a-b177-98c1555dec3a
+      - TOS_ARK_MODEL_ID=doubao-seedream-4-5-251128
     networks:
       - lalaman-network
     command: >
